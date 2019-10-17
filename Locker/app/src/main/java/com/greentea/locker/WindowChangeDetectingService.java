@@ -1,23 +1,55 @@
 package com.greentea.locker;
 
 import android.accessibilityservice.AccessibilityService;
+import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
+import com.greentea.locker.Utilities.CalculateDistance;
+
 public class WindowChangeDetectingService extends AccessibilityService{
+
+    LocationManager lm;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
 
             if( "com.kakao.talk".equals(event.getPackageName())){
-                Toast.makeText(this, "공부해라", Toast.LENGTH_SHORT);
-                gotoHome();
+
+                double longitude = 0, latitude = 0;
+
+                // 여기서 위치 권한 요청해야함
+                // 서비스에서 요청이 안되는 부분 해결할 것
+
+                lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+                    //ActivityCompat.requestPermissions( MainActivity.this, new String[] {  android.Manifest.permission.ACCESS_FINE_LOCATION  }, 0 );
+                }
+                else{
+                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                }
+
+                // ex) 하이테크센터
+                if(CalculateDistance.distance(latitude, longitude, 37.4505988,126.6551209) <= 1) {
+
+                    Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
+                    gotoHome();
+                }
             }
         }
+
+
     }
 
     @Override

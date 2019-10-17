@@ -1,5 +1,6 @@
 package com.greentea.locker;
 
+import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -10,18 +11,25 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
+import com.greentea.locker.Utilities.CalculateDistance;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.overlay.LocationOverlay;
+import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.widget.LocationButtonView;
 
 import java.util.List;
 
 //http://swlock.blogspot.com/2015/05/android_22.html
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // NaverMap API 3.0
     private MapView mapView;
@@ -40,11 +48,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             setAccessibilityPermissions();
         }
 
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(getBaseContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setRationaleTitle("title")
+                .setRationaleMessage("message")
+                .setDeniedTitle("Permission denied")
+                .setDeniedMessage(
+                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setGotoSettingButtonText("OK")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
+                .check();
+
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
 
         naverMapBasicSettings();
     }
+
+    // https://hyongdoc.tistory.com/177
     public void naverMapBasicSettings() {
         mapView.getMapAsync(this);
         //내위치 버튼
@@ -52,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // 내위치 찾기 위한 source
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -62,18 +95,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
         //naverMap.getUiSettings().setLocationButtonEnabled(true);
         locationButtonView.setMap(naverMap);
 
-        // Location Change Listener을 사용하기 위한 FusedLocationSource 설정
+        Marker marker = new Marker();
+        marker.setPosition(new LatLng(37.4505988,126.6551209));
+        marker.setMap(naverMap);
 
+        // Location Change Listener를 사용하기 위한 FusedLocationSource 설정
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
     }
-
 
     @Override
     protected void onStart() {
@@ -123,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // getEnabledAccessibilityServiceList는 현재 접근성 권한을 가진 리스트를 가져오게 된다
         List<AccessibilityServiceInfo> list = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.DEFAULT);
+        // default
 
         for (int i = 0; i < list.size(); i++) {
             AccessibilityServiceInfo info = list.get(i);

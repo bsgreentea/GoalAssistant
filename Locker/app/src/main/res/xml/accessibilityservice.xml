@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service
     android:accessibilityEventTypes="typeWindowStateChanged"
-    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFeedbackType="feedbackAllMask"
     android:accessibilityFlags="flagIncludeNotImportantViews"
     android:description="@string/app_name"
     android:settingsActivity="com.example.MainActivity"
