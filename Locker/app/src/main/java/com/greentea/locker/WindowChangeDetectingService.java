@@ -26,9 +26,6 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
                 double longitude = 0, latitude = 0;
 
-                // 여기서 위치 권한 요청해야함
-                // 서비스에서 요청이 안되는 부분 해결할 것
-
                 lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
                 if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
@@ -48,8 +45,6 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 }
             }
         }
-
-
     }
 
     @Override

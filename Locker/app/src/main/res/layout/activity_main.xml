@@ -24,4 +24,13 @@
         app:layout_constraintTop_toTopOf="parent">
     </com.naver.maps.map.widget.LocationButtonView>
 
+    <Button
+        android:layout_marginTop="30dp"
+        android:id="@+id/button2"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:layout_gravity="right"
+        android:text="앱 추가" />
+
 </LinearLayout>

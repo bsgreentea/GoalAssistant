@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.greentea.locker.Utilities.CheckableLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:padding="2dip">
+    <ImageView
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="fitCenter"
+        android:layout_marginRight="10dp"
+        android:id="@+id/app_icon"
+        android:layout_weight="1"/>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="0px"
+        android:id="@+id/linearLayout1"
+        android:layout_weight="5">
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Application Name"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/app_package"
+            android:text="Package Name"
+            android:layout_below="@id/app_name"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/checkBox1"
+        android:focusable="false"
+        android:clickable="false"
+        android:layout_weight="1" />
+
+</com.greentea.locker.Utilities.CheckableLinearLayout>

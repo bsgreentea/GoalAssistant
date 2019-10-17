@@ -10,7 +10,9 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.greentea.locker.Utilities.CalculateDistance;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // NaverMap API 3.0
     private MapView mapView;
     private LocationButtonView locationButtonView;
+    private Button button;
 
     // FusedLocationSource (Google)
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
@@ -76,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
 
         naverMapBasicSettings();
+
+        button = (Button) findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
+                startActivityForResult(intent, 101);
+            }
+        });
     }
 
     // https://hyongdoc.tistory.com/177
@@ -100,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //naverMap.getUiSettings().setLocationButtonEnabled(true);
         locationButtonView.setMap(naverMap);
 
+        // ex) 하이테크센터
         Marker marker = new Marker();
         marker.setPosition(new LatLng(37.4505988,126.6551209));
         marker.setMap(naverMap);
