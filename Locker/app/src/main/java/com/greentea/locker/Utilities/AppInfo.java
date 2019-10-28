@@ -15,9 +15,9 @@ public class AppInfo {
     // 아이콘
     public Drawable mIcon = null;
     // 어플리케이션 이름
-    public String mAppNaem = null;
+    public String mAppName = null;
     // 패키지 명
-    public String mAppPackge = null;
+    public String mAppPackage = null;
 
     /**
      * 서드파티 필터
@@ -44,7 +44,7 @@ public class AppInfo {
         private final Collator sCollator = Collator.getInstance();
         @Override
         public int compare(AppInfo object1, AppInfo object2) {
-            return sCollator.compare(object1.mAppNaem, object2.mAppNaem);
+            return sCollator.compare(object1.mAppName, object2.mAppName);
         }
     };
 }

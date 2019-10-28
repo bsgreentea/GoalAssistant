@@ -3,4 +3,7 @@
     <string name="loading">로딩중</string>
     <string name="menu_download">다운로드</string>
     <string name="menu_all">전체</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="favorites">Favorites</string>
 </resources>

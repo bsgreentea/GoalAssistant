@@ -60,9 +60,9 @@ public class AppInfoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> av, View view, int position,
                                     long id) {
                 // TODO Auto-generated method stub
-                String app_name = ((TextView) view.findViewById(R.id.app_name)).getText().toString();
+                String appName = ((TextView) view.findViewById(R.id.app_name)).getText().toString();
                 String package_name = ((TextView) view.findViewById(R.id.app_package)).getText().toString();
-                Toast.makeText(AppInfoActivity.this, package_name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppInfoActivity.this, appName, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -122,7 +122,7 @@ public class AppInfoActivity extends AppCompatActivity {
         // App Name
         public TextView mName;
         // App Package Name
-        public TextView mPacakge;
+        public TextView mPackage;
     }
 
     /**
@@ -167,7 +167,7 @@ public class AppInfoActivity extends AppCompatActivity {
                         .findViewById(R.id.app_icon);
                 holder.mName = (TextView) convertView
                         .findViewById(R.id.app_name);
-                holder.mPacakge = (TextView) convertView
+                holder.mPackage = (TextView) convertView
                         .findViewById(R.id.app_package);
 
                 convertView.setTag(holder);
@@ -181,8 +181,8 @@ public class AppInfoActivity extends AppCompatActivity {
                 holder.mIcon.setImageDrawable(data.mIcon);
             }
 
-            holder.mName.setText(data.mAppNaem);
-            holder.mPacakge.setText(data.mAppPackge);
+            holder.mName.setText(data.mAppName);
+            holder.mPackage.setText(data.mAppPackage);
 
             return convertView;
         }
@@ -230,9 +230,9 @@ public class AppInfoActivity extends AppCompatActivity {
                     // App Icon
                     addInfo.mIcon = app.loadIcon(pm);
                     // App Name
-                    addInfo.mAppNaem = app.loadLabel(pm).toString();
+                    addInfo.mAppName = app.loadLabel(pm).toString();
                     // App Package Name
-                    addInfo.mAppPackge = app.packageName;
+                    addInfo.mAppPackage = app.packageName;
                     mListData.add(addInfo);
                 }
             }
