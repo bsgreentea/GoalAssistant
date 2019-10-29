@@ -13,15 +13,18 @@ public class AppInfo {
     }
 
     // 아이콘
-    public Drawable mIcon = null;
+//    public Drawable mIcon = null;
     // 어플리케이션 이름
     public String mAppName = null;
     // 패키지 명
     public String mAppPackage = null;
 
-    /**
-     * 서드파티 필터
-     */
+//    @Override
+//    public String toString() {
+//        return "AppInfo [mIcon=" + mIcon.toString() + ", mAppName=" + mAppName + ", mAppPackage=" + mAppPackage + "]";
+//    }
+
+    // 서드파티 필터
     public static final AppFilter THIRD_PARTY_FILTER = new AppFilter() {
         public void init() {
         }
@@ -37,9 +40,7 @@ public class AppInfo {
         }
     };
 
-    /**
-     * 알파벳 이름으로 정렬
-     */
+    // 알파벳 이름으로 정렬
     public static final Comparator<AppInfo> ALPHA_COMPARATOR = new Comparator<AppInfo>() {
         private final Collator sCollator = Collator.getInstance();
         @Override

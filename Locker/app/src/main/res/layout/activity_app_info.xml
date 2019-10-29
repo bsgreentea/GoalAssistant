@@ -32,10 +32,4 @@
         android:text="@string/loading"
         android:textAppearance="?android:attr/textAppearanceSmall"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="58dp"
-        android:text="적용" />
 </LinearLayout>
