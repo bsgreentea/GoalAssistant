@@ -13,11 +13,13 @@ public class AppInfo {
     }
 
     // 아이콘
-//    public Drawable mIcon = null;
+    public Drawable mIcon = null;
     // 어플리케이션 이름
     public String mAppName = null;
     // 패키지 명
     public String mAppPackage = null;
+
+    public boolean chkFlag = false;
 
 //    @Override
 //    public String toString() {

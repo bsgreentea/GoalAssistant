@@ -1,21 +1,30 @@
 package com.greentea.locker;
 
-import android.app.Activity;
-import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.ConditionVariable;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.greentea.locker.Database.CheckedApp;
+import com.greentea.locker.Database.ChkedApp;
 import com.greentea.locker.Utilities.AppInfo;
+//import com.greentea.locker.ViewModel.CheckedAppViewModel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class AppInfoActivity extends AppCompatActivity {
@@ -25,16 +34,30 @@ public class AppInfoActivity extends AppCompatActivity {
     private ListView mListView = null;
     private AppInfoAdapter mAdapter = null;
 
-    SharedPreference sharedPreference;
+//    SharedPreference sharedPreference;
+
+    SharedPreferences sharedPreferences;
+    HashSet<String> hashSet;
 
     private List<AppInfo> appInfoList;
+//    private CheckedAppViewModel checkedAppViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_info);
 
-        sharedPreference = new SharedPreference();
+        hashSet = new HashSet<>();
+        sharedPreferences = getSharedPreferences("test", MODE_PRIVATE);
+
+//        checkedAppViewModel = ViewModelProviders.of(this).get(CheckedAppViewModel.class);
+//        checkedAppViewModel.getAllCheckedApps().observe(this, new Observer<List<CheckedApp>>() {
+//            @Override
+//            public void onChanged(List<CheckedApp> checkedApps) {
+//            }
+//        });
+
+//        sharedPreference = new SharedPreference();
 
         mLoadingContainer = findViewById(R.id.loading_container);
         mListView = (ListView) findViewById(R.id.listView1);
@@ -49,17 +72,21 @@ public class AppInfoActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> av, View view, int position, long id) {
 
                 String appName = ((TextView) view.findViewById(R.id.app_name)).getText().toString();
-                String package_name = ((TextView) view.findViewById(R.id.app_package)).getText().toString();
+                String packageName = ((TextView) view.findViewById(R.id.app_package)).getText().toString();
 
                 CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox1);
 
                 if(checkBox.isChecked()){
-                    sharedPreference.removeAppInfo(AppInfoActivity.this, appInfoList.get(position));
+//                    sharedPreference.removeAppInfo(AppInfoActivity.this, appInfoList.get(position));
+//                    ChkedApp.delete(ChkedApp.find(ChkedApp.class, "packageName = ? and appName = ?", packageName, appName));
                     checkBox.setChecked(false);
+                    hashSet.remove(packageName);
                 }
                 else{
-                    sharedPreference.addAppInfo(AppInfoActivity.this, appInfoList.get(position));
+//                    sharedPreference.addAppInfo(AppInfoActivity.this, appInfoList.get(position));
+//                    ChkedApp.save(new ChkedApp(packageName,appName));
                     checkBox.setChecked(true);
+                    hashSet.add(packageName);
                 }
 
                 Toast.makeText(AppInfoActivity.this, appName, Toast.LENGTH_SHORT).show();
@@ -73,6 +100,24 @@ public class AppInfoActivity extends AppCompatActivity {
 
         // 작업 시작
         startTask();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        List<String> list = new ArrayList<>();
+        list.addAll(hashSet);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+//        editor.putString("data", list.toString());
+
+        for(String s : list){
+            editor.putString(s, s);
+        }
+
+        editor.commit();
     }
 
     // 작업 시작

@@ -1,6 +1,7 @@
 package com.greentea.locker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.greentea.locker.Database.ChkedApp;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -34,12 +36,14 @@ public class AppInfoAdapter extends BaseAdapter {
     private ArrayList<AppInfo> mListData = new ArrayList<AppInfo>();
 
     SharedPreference sharedPreference;
+    SharedPreferences sharedPreferences;
 
     public AppInfoAdapter(Context mContext) {
         super();
 //        this.checkedApps = list;
         this.mContext = mContext;
         sharedPreference = new SharedPreference();
+//        sharedPreferences = mContext.getSharedPreferences("test", mContext.MODE_PRIVATE);
     }
 
     public List<AppInfo> getApplist(){
@@ -79,7 +83,7 @@ public class AppInfoAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_layout, null);
 
-//            holder.mIcon = (ImageView) convertView.findViewById(R.id.app_icon);
+            holder.mIcon = (ImageView) convertView.findViewById(R.id.app_icon);
             holder.mName = (TextView) convertView.findViewById(R.id.app_name);
             holder.mPackage = (TextView) convertView.findViewById(R.id.app_package);
             holder.checkBox = (CheckBox) convertView.findViewById(R.id.checkBox1);
@@ -91,18 +95,20 @@ public class AppInfoAdapter extends BaseAdapter {
 
         AppInfo appInfo = mListData.get(position);
 
-//        if (appInfo.mIcon != null) {
-//            holder.mIcon.setImageDrawable(appInfo.mIcon);
-//        }
+        if (appInfo.mIcon != null) {
+            holder.mIcon.setImageDrawable(appInfo.mIcon);
+        }
 
         holder.mName.setText(appInfo.mAppName);
         holder.mPackage.setText(appInfo.mAppPackage);
 
-        if (checkItem(appInfo)) {
-            holder.checkBox.setChecked(true);
-        } else {
-            holder.checkBox.setChecked(false);
-        }
+        holder.checkBox.setChecked(appInfo.chkFlag);
+
+//        if (checkItem(appInfo)) {
+//            holder.checkBox.setChecked(true);
+//        } else {
+//            holder.checkBox.setChecked(false);
+//        }
 
         return convertView;
     }
@@ -134,6 +140,11 @@ public class AppInfoAdapter extends BaseAdapter {
 
         // 기존 데이터 초기화
         mListData.clear();
+        List<ChkedApp> chkedApps = null;// = ChkedApp.listAll(ChkedApp.class);
+
+        sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
+
+        String string;
 
         AppInfo addInfo = null;
         ApplicationInfo info = null;
@@ -145,11 +156,28 @@ public class AppInfoAdapter extends BaseAdapter {
 
                 addInfo = new AppInfo();
                 // App Icon
-//                addInfo.mIcon = app.loadIcon(pm);
+                addInfo.mIcon = app.loadIcon(pm);
                 // App Name
                 addInfo.mAppName = app.loadLabel(pm).toString();
                 // App Package Name
                 addInfo.mAppPackage = app.packageName;
+
+                string = sharedPreferences.getString(addInfo.mAppPackage, "");
+
+                if(string == ""){
+                    addInfo.chkFlag = false;
+                }
+                else{
+                    addInfo.chkFlag = true;
+                }
+
+//                if(chkedApps != null && chkedApps.contains(addInfo.mAppName)){
+//                    addInfo.chkFlag = true;
+//                }
+//                else{
+//                    addInfo.chkFlag = false;
+//                }
+
                 mListData.add(addInfo);
             }
         }
@@ -158,17 +186,17 @@ public class AppInfoAdapter extends BaseAdapter {
         Collections.sort(mListData, AppInfo.ALPHA_COMPARATOR);
     }
 
-    public boolean checkItem(AppInfo cApp) {
-        boolean check = false;
-        List<AppInfo> favorites = sharedPreference.getList(mContext);
-        if (favorites != null) {
-            for (AppInfo appInfo : favorites) {
-                if (appInfo.equals(cApp)) {
-                    check = true;
-                    break;
-                }
-            }
-        }
-        return check;
-    }
+//    public boolean checkItem(AppInfo cApp) {
+//        boolean check = false;
+//        List<AppInfo> favorites = sharedPreference.getList(mContext);
+//        if (favorites != null) {
+//            for (AppInfo appInfo : favorites) {
+//                if (appInfo.equals(cApp)) {
+//                    check = true;
+//                    break;
+//                }
+//            }
+//        }
+//        return check;
+//    }
 }
