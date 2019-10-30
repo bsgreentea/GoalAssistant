@@ -3,6 +3,7 @@ package com.greentea.locker;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -14,16 +15,36 @@ import android.widget.Toast;
 
 import com.greentea.locker.Utilities.CalculateDistance;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 public class WindowChangeDetectingService extends AccessibilityService{
 
     LocationManager lm;
+
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
 
-            if( "com.kakao.talk".equals(event.getPackageName())){
+            sharedPreferences = getApplicationContext().getSharedPreferences("test", MODE_PRIVATE);
 
+            Map<String, ?> allEntries = sharedPreferences.getAll();
+
+            int flag = 0;
+            String eventString = event.getPackageName().toString();
+
+            for(Map.Entry<String, ?> entry : allEntries.entrySet()){
+                if(entry.getKey().equals(eventString)){
+                    flag = 1; break;
+                }
+            }
+
+//            if( "com.kakao.talk".equals(event.getPackageName())){
+
+            if(flag == 1) {
                 double longitude = 0, latitude = 0;
 
                 lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
