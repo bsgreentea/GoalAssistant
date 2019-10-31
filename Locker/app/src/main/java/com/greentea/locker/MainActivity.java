@@ -15,6 +15,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.maps.geometry.LatLng;
@@ -36,7 +37,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // NaverMap API 3.0
     private MapView mapView;
     private LocationButtonView locationButtonView;
-    private Button button;
+//    private Button button;
+    private FloatingActionButton button;
 
     // FusedLocationSource (Google)
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         naverMapBasicSettings();
 
-        button = (Button) findViewById(R.id.button2);
+        button = (FloatingActionButton) findViewById(R.id.fab_main);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);

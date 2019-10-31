@@ -34,6 +34,9 @@ dependencies {
     // 권한 요청
     implementation 'gun0912.ted:tedpermission:2.2.2'
 
+    // floating action button
+    implementation 'com.google.android.material:material:1.0.0-rc01'
+
     // sugar orm
     implementation 'com.github.satyan:sugar:1.5'
 

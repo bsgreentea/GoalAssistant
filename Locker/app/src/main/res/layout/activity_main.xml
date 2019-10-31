@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,20 +17,26 @@
         android:id="@+id/locationbuttonview"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="-80dp"
+        android:layout_marginTop="240dp"
         android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </com.naver.maps.map.widget.LocationButtonView>
 
-    <Button
-        android:layout_marginTop="30dp"
-        android:id="@+id/button2"
-        android:layout_width="100dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_main"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="#009688"
+        android:src="@drawable/ic_add_black_24dp"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
         android:layout_gravity="right"
-        android:text="앱 추가" />
+        />
 
-</LinearLayout>
+</RelativeLayout>
