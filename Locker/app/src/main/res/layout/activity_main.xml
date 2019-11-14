@@ -24,6 +24,15 @@
         app:layout_constraintTop_toTopOf="parent">
     </com.naver.maps.map.widget.LocationButtonView>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:layout_below="@id/map_view"
+        android:padding="5dp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_main"
         android:layout_width="wrap_content"

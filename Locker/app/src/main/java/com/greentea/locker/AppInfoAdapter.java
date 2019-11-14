@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.greentea.locker.Database.ChkedApp;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -140,7 +139,6 @@ public class AppInfoAdapter extends BaseAdapter {
 
         // 기존 데이터 초기화
         mListData.clear();
-        List<ChkedApp> chkedApps = null;// = ChkedApp.listAll(ChkedApp.class);
 
         sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
 
@@ -170,13 +168,6 @@ public class AppInfoAdapter extends BaseAdapter {
                 else{
                     addInfo.chkFlag = true;
                 }
-
-//                if(chkedApps != null && chkedApps.contains(addInfo.mAppName)){
-//                    addInfo.chkFlag = true;
-//                }
-//                else{
-//                    addInfo.chkFlag = false;
-//                }
 
                 mListData.add(addInfo);
             }
