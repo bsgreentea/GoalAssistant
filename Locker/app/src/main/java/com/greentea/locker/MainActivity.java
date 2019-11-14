@@ -6,16 +6,25 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.PointF;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.greentea.locker.Adapter.RecyclerAdapter;
+import com.greentea.locker.PlaceDatabase.PickedPlace;
+import com.greentea.locker.ViewModel.PickedPlaceViewModel;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.maps.geometry.LatLng;
@@ -26,13 +35,12 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.widget.LocationButtonView;
-import com.orm.SugarContext;
-import com.orm.SugarRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //http://swlock.blogspot.com/2015/05/android_22.html
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NameDialog.NameDialogListener, RecyclerAdapter.OnListItemSelectedInterface {
 
     // NaverMap API 3.0
     private MapView mapView;
@@ -44,10 +52,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     private FusedLocationSource locationSource;
 
+    private String placeName = "";
+
+    private ArrayList<PickedPlace> list = new ArrayList<>();
+    private LatLng tempLatLng;
+
+    private PickedPlaceViewModel pickedPlaceViewModel;
+    private RecyclerAdapter adapter;
+
+    RecyclerView recyclerView;
+
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("places", MODE_PRIVATE);
 
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
@@ -89,6 +111,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivityForResult(intent, 101);
             }
         });
+
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new RecyclerAdapter(this, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        init();
+    }
+
+    private void init() {
+
+        pickedPlaceViewModel = ViewModelProviders.of(this).get(PickedPlaceViewModel.class);
+        pickedPlaceViewModel.getAllPickedPlace().observe(this, new Observer<List<PickedPlace>>() {
+            @Override
+            public void onChanged(List<PickedPlace> pickedPlaces) {
+
+                adapter.setPlaces(pickedPlaces);
+
+                list = new ArrayList<>();
+                if(pickedPlaces.size() > 0) {
+                    for (int i = 0; i < pickedPlaces.size(); i++) {
+                        list.add(pickedPlaces.get(i));
+                    }
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onItemSelected(View v, int position) {
+        RecyclerAdapter.ViewHolder viewHolder = (RecyclerAdapter.ViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
+//        viewHolder
     }
 
     // https://hyongdoc.tistory.com/177
@@ -114,13 +169,63 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationButtonView.setMap(naverMap);
 
         // ex) 하이테크센터
-        Marker marker = new Marker();
-        marker.setPosition(new LatLng(37.4505988,126.6551209));
-        marker.setMap(naverMap);
+        final Marker marker = new Marker();
 
         // Location Change Listener를 사용하기 위한 FusedLocationSource 설정
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
+
+        // 지도를 길게 누를 때 마커 추가하기
+        naverMap.setOnMapLongClickListener(new NaverMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+
+                tempLatLng = new LatLng(latLng.latitude, latLng.longitude);
+                openDialog(pointF, latLng);
+
+                Marker m = new Marker();
+
+                m.setPosition(latLng);
+                m.setMap(naverMap);
+            }
+        });
+
+        if(list != null) {
+            Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < list.size(); i++) {
+                Marker m = new Marker();
+
+                m.setPosition(new LatLng(list.get(i).getLat(), list.get(i).getLng()));
+                m.setMap(naverMap);
+            }
+        }
+    }
+
+    @Override
+    public void applyText(String name) {
+
+        placeName = name;
+//        Data data = new Data(placeName);
+//
+//        data.setLat(tempLatLng.latitude);
+//        data.setLng(tempLatLng.longitude);
+
+//        list.add(data);
+//        adapter.addItem(data);
+//        adapter.notifyDataSetChanged();
+
+        PickedPlace pickedPlace = new PickedPlace();
+        pickedPlace.setPlaceName(name);
+        pickedPlace.setCheckedList(name);
+        pickedPlace.setLat(tempLatLng.latitude);
+        pickedPlace.setLng(tempLatLng.longitude);
+        list.add(pickedPlace);
+        pickedPlaceViewModel.insert(pickedPlace);
+    }
+
+    public void openDialog(PointF pointF, LatLng latLng){
+        NameDialog nameDialog = new NameDialog();
+        nameDialog.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -151,6 +256,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onStop() {
         super.onStop();
         mapView.onStop();
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+
+        if(list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+
+                String temp = list.get(i).getLat().toString() + " " + list.get(i).getLng().toString();
+
+                editor.putString(temp,temp);
+            }
+        }
+
+        editor.commit();
     }
 
     @Override
