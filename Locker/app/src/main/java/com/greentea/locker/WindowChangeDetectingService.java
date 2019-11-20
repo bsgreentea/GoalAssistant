@@ -129,6 +129,8 @@ public class WindowChangeDetectingService extends AccessibilityService{
         super.onDestroy();
     }
 
+
+
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
         return false;

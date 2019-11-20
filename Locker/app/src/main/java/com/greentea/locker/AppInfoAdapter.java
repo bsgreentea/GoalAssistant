@@ -34,14 +34,12 @@ public class AppInfoAdapter extends BaseAdapter {
     private List<AppInfo> checkedApps;
     private ArrayList<AppInfo> mListData = new ArrayList<AppInfo>();
 
-    SharedPreference sharedPreference;
     SharedPreferences sharedPreferences;
 
     public AppInfoAdapter(Context mContext) {
         super();
 //        this.checkedApps = list;
         this.mContext = mContext;
-        sharedPreference = new SharedPreference();
 //        sharedPreferences = mContext.getSharedPreferences("test", mContext.MODE_PRIVATE);
     }
 
