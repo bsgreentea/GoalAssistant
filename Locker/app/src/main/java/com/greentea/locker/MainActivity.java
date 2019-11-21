@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.greentea.locker.Adapter.RecyclerAdapter;
+import com.greentea.locker.Database.DbOpenHelper;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
 import com.gun0912.tedpermission.PermissionListener;
@@ -64,12 +65,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     SharedPreferences sharedPreferences;
 
+//    https://github.com/yoondowon/InnerDatabaseSQLite/blob/master/app/src/main/java/com/example/user/innerdatabasesqlite/MainActivity.java
+    private DbOpenHelper mDbOpenHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         sharedPreferences = getSharedPreferences("places", MODE_PRIVATE);
+
+        mDbOpenHelper = new DbOpenHelper(this);
+        mDbOpenHelper.open();
+        mDbOpenHelper.create();
 
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
@@ -116,6 +124,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         adapter = new RecyclerAdapter(this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(View v, int pos) {
+                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
+                startActivityForResult(intent, 102);
+            }
+        });
 
         init();
     }
@@ -216,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         PickedPlace pickedPlace = new PickedPlace();
         pickedPlace.setPlaceName(name);
-        pickedPlace.setCheckedList(name);
+        pickedPlace.setCheckedList("");
         pickedPlace.setLat(tempLatLng.latitude);
         pickedPlace.setLng(tempLatLng.longitude);
         list.add(pickedPlace);

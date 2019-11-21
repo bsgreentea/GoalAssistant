@@ -1,11 +1,13 @@
 package com.greentea.locker;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -49,6 +51,9 @@ public class AppInfoActivity extends AppCompatActivity {
         mAdapter = new AppInfoAdapter(this);
         appInfoList = mAdapter.getApplist();
         mListView.setAdapter(mAdapter);
+
+        Intent intent = getIntent();
+        String placeName = intent.getExtras().getString("placeName");
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
 

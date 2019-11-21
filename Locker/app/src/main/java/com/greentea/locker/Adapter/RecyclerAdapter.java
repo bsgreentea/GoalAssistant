@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     private final LayoutInflater layoutInflater;
 
     private OnListItemSelectedInterface mListener;
+    private OnItemClickListener itemListener = null;
 
     public RecyclerAdapter(Context context, OnListItemSelectedInterface onListItemSelectedInterface){
         layoutInflater = LayoutInflater.from(context);
@@ -43,22 +45,49 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
 
     @Override
-    public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
         // Item을 하나, 하나 보여주는(bind 되는) 함수
         holder.onBind(listData.get(position));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+
+                Context context = v.getContext();
+                Intent intent = new Intent(context, AppInfoActivity.class);
+
+//                intent.putExtra();
+
+                String placeName = listData.get(position).getPlaceName();
+
+                intent.putExtra("placeName", placeName);
+                Toast.makeText(context, placeName, Toast.LENGTH_SHORT).show();
+                context.startActivity(intent);
+//                Toast.makeText(context, "asdf", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public interface OnListItemSelectedInterface {
         void onItemSelected(View v, int position);
     }
 
-//    @Override
+
+    //    @Override
 //    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
 //        // Item을 하나, 하나 보여주는(bind 되는) 함수
 ////        holder.onBind(listData.get(position));
 //        holder.setIsRecyclable(true);
 //        holder.
 //    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.itemListener = listener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -71,12 +100,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                     int pos = getAdapterPosition();
                     if(pos != RecyclerView.NO_POSITION){
 
-                        mListener.onItemSelected(v, pos);
+                        if(itemListener != null){
+                            itemListener.onItemClick(v, pos);
+                        }
 
-                        Context context = v.getContext();
-                        Intent intent = new Intent(context, AppInfoActivity.class);
-                        context.startActivity(intent);
+//                        mListener.onItemSelected(v, pos);
 
+//                        Context context = v.getContext();
+//                        Intent intent = new Intent(context, AppInfoActivity.class);
+//                        context.startActivity(intent);
                     }
                 }
             });
