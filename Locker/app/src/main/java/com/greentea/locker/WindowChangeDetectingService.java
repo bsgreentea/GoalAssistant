@@ -10,19 +10,23 @@ import android.location.LocationManager;
 import android.os.Build;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
+import androidx.room.Room;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.PlaceDatabase.PickedPlaceDB;
+import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.CalculateDistance;
 import com.naver.maps.geometry.LatLng;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class WindowChangeDetectingService extends AccessibilityService{
 
@@ -30,9 +34,18 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
     SharedPreferences sharedPreferences;
 
+//    @Override
+//    public void onCreate() {
+//        super.onCreate();
+//
+//        Log.d("serviceOncreate_test", "service is created");
+//    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
+
+            Log.i("Service_test", event.getPackageName().toString());
 
             sharedPreferences = getApplicationContext().getSharedPreferences("test", MODE_PRIVATE);
 
@@ -47,8 +60,15 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 }
             }
 
+//            if("com.kakao.talk".equals(event.getPackageName())){
+//                Log.d("kakao_test", "test");
+//                gotoHome();
+//            }
+
+
 //            if( "com.kakao.talk".equals(event.getPackageName())){
 
+            flag = 1;
             if(flag == 1) {
                 double longitude = 0, latitude = 0;
 
@@ -63,40 +83,55 @@ public class WindowChangeDetectingService extends AccessibilityService{
                     latitude = location.getLatitude();
                 }
 
-//                PickedPlaceDB db = PickedPlaceDB.getDB(getApplication());
-//
-//                List<PickedPlace> places =  db.pickedPlaceDAO().getAll();
+//                String temp = Double.toString(latitude) + Double.toString(longitude);
+//                Log.i("coord_test", temp);
 
+                List<PickedPlace> places = new PickedPlaceRepository(getApplication()).getAll();
+
+                Log.i("places", String.valueOf(places.size()));
+
+                for(int i=0; i<places.size(); i++){
+                    Log.d("places[i]", places.get(i).getPlaceName());
+
+//                    Double lat = places.get(i).
+                }
+
+//                List<PickedPlace> places = PickedPlaceDB.getDB(getApplication()).pickedPlaceDAO().getAll();
+//
 //                for(int i=0; i<places.size(); i++){
+//
+//                    Log.d("service_test", "database test");
 //
 //                    Double lat = places.get(i).getLat();
 //                    Double lng = places.get(i).getLng();
 //
+//                    Toast.makeText(getApplicationContext(), "thsithisthisthis", Toast.LENGTH_SHORT).show();
+//
 //                    if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
 //
 //                        Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-//                        gotoHome(); break;
+//                        gotoHome();
 //                    }
 //                }
 
-                sharedPreferences = getApplicationContext().getSharedPreferences("place", MODE_PRIVATE);
-
-                Map<String, ?> places = sharedPreferences.getAll();
-
-                for(Map.Entry<String, ?> entry : places.entrySet()){
-                    String temp[] = entry.getKey().split(" ");
-                    String lats = temp[0];
-                    String lngs = temp[1];
-                    Double lat = Double.parseDouble(lats);
-                    Double lng = Double.parseDouble(lngs);
-
-                    if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
-
-                        Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getApplicationContext(), lats +" " + lngs, Toast.LENGTH_SHORT).show();
-                        gotoHome();
-                    }
-                }
+//                sharedPreferences = getApplicationContext().getSharedPreferences("place", MODE_PRIVATE);
+//
+//                Map<String, ?> places = sharedPreferences.getAll();
+//
+//                for(Map.Entry<String, ?> entry : places.entrySet()){
+//                    String temp[] = entry.getKey().split(" ");
+//                    String lats = temp[0];
+//                    String lngs = temp[1];
+//                    Double lat = Double.parseDouble(lats);
+//                    Double lng = Double.parseDouble(lngs);
+//
+//                    if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
+//
+//                        Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), lats +" " + lngs, Toast.LENGTH_SHORT).show();
+//                        gotoHome();
+//                    }
+//                }
 
 //                // ex) 하이테크센터
 //                if(CalculateDistance.distance(latitude, longitude, 37.4505988,126.6551209) <= 1) {

@@ -112,13 +112,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         naverMapBasicSettings();
 
-        button = (FloatingActionButton) findViewById(R.id.fab_main);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
-                startActivityForResult(intent, 101);
-            }
-        });
+//        button = (FloatingActionButton) findViewById(R.id.fab_main);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
+//                startActivityForResult(intent, 101);
+//            }
+//        });
 
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new RecyclerAdapter(this, this);

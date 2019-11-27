@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class PickedPlaceRepository {
 
@@ -70,4 +71,29 @@ public class PickedPlaceRepository {
     }
 
 //    public List<PickedPlace> getAll() {return places;}
+
+    public List<PickedPlace> getAll(){
+        try{
+            places = new getAllAsyncTask(pickedPlaceDAO).execute().get();
+
+        } catch (ExecutionException e){
+
+        } catch (InterruptedException e){
+
+        }
+        return places;
+    }
+
+    private static class getAllAsyncTask extends AsyncTask<Void, Void, List<PickedPlace>>{
+        private PickedPlaceDAO asyncPlaceDao;
+
+        getAllAsyncTask(PickedPlaceDAO dao){
+            asyncPlaceDao = dao;
+        }
+
+        @Override
+        protected List<PickedPlace> doInBackground(Void... voids) {
+            return asyncPlaceDao.getAll();
+        }
+    }
 }

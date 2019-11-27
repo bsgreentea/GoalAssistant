@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -85,11 +86,15 @@ public class AppInfoActivity extends AppCompatActivity {
 
         // 작업 시작
         startTask();
+
+        hashSet = new HashSet<>();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+
+        Log.d("chk_list_test", "test");
 
         List<String> list = new ArrayList<>();
         list.addAll(hashSet);
@@ -102,6 +107,13 @@ public class AppInfoActivity extends AppCompatActivity {
         }
 
         editor.commit();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+
     }
 
     // 작업 시작
