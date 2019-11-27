@@ -58,7 +58,7 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
             Log.i("places", String.valueOf(places.size()));
 
-            StringBuilder appNames = new StringBuilder();
+            String appNames = "";
 
             for(int i=0; i<places.size(); i++){
                 Log.d("places[i]", places.get(i).getPlaceName());
@@ -66,13 +66,40 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 Double lat = places.get(i).getLat();
                 Double lng = places.get(i).getLng();
 
-                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
+                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 10) {
 
+                    Log.d("chked?", "ehkced");
 //                    Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
 //                    gotoHome();
+
+                    if(appNames.equals("")){
+                        appNames = places.get(i).getCheckedList();
+                    }
+                    else{
+                        appNames += "," + places.get(i).getCheckedList();
+                    }
+                }
+
+                Log.d("appss",appNames);
+            }
+
+            String[] apps = appNames.split(",");
+
+            Log.d("apps", appNames);
+
+            boolean flag = false;
+
+            for(String temp : apps){
+                if(event.getPackageName().toString().equals(temp)){
+                    flag = true;
+                    break;
                 }
             }
 
+            if(flag) {
+                Toast.makeText(getApplicationContext(), "앱을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                gotoHome();
+            }
 
 //            Log.i("Service_test", event.getPackageName().toString());
 

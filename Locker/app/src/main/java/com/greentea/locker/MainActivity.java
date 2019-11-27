@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
@@ -65,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     RecyclerView recyclerView;
 
-    SharedPreferences sharedPreferences;
-
 //    https://github.com/yoondowon/InnerDatabaseSQLite/blob/master/app/src/main/java/com/example/user/innerdatabasesqlite/MainActivity.java
     private DbOpenHelper mDbOpenHelper;
 
@@ -74,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        sharedPreferences = getSharedPreferences("places", MODE_PRIVATE);
 
         mDbOpenHelper = new DbOpenHelper(this);
         mDbOpenHelper.open();
@@ -283,19 +278,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
         mapView.onStop();
 
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.clear();
-//
-//        if(list.size() > 0) {
-//            for (int i = 0; i < list.size(); i++) {
-//
-//                String temp = list.get(i).getLat().toString() + " " + list.get(i).getLng().toString();
-//
-//                editor.putString(temp,temp);
-//            }
-//        }
-//
-//        editor.commit();
     }
 
     @Override
