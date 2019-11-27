@@ -96,4 +96,32 @@ public class PickedPlaceRepository {
             return asyncPlaceDao.getAll();
         }
     }
+
+    public PickedPlace getPlace(String pName){
+        PickedPlace pickedPlace = new PickedPlace();
+        try{
+            pickedPlace = new getPickedPlaceAsyncTask(pickedPlaceDAO, pName).execute().get();
+
+        } catch (ExecutionException e){
+
+        } catch (InterruptedException e){
+
+        }
+        return pickedPlace;
+    }
+
+    private static class getPickedPlaceAsyncTask extends AsyncTask<Void, Void, PickedPlace> {
+        private PickedPlaceDAO asyncPlaceDao;
+        private String pName;
+
+        getPickedPlaceAsyncTask(PickedPlaceDAO dao, String pName){
+            asyncPlaceDao = dao;
+            this.pName = pName;
+        }
+
+        @Override
+        protected PickedPlace doInBackground(Void... voids) {
+            return asyncPlaceDao.getPlace(pName);
+        }
+    }
 }

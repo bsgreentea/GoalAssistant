@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.greentea.locker.PlaceDatabase.PickedPlace;
+import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -49,12 +51,19 @@ public class AppInfoActivity extends AppCompatActivity {
         mLoadingContainer = findViewById(R.id.loading_container);
         mListView = (ListView) findViewById(R.id.listView1);
 
-        mAdapter = new AppInfoAdapter(this);
+        Intent intent = getIntent();
+//        String placeName = intent.getExtras().getString("placeName");
+        PickedPlace pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
+
+//        PickedPlace pickedPlace = new PickedPlaceRepository(getApplication()).getPlace(placeName);
+
+        Toast.makeText(this, pickedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
+
+        String appList = pickedPlace.getCheckedList();
+
+        mAdapter = new AppInfoAdapter(this, appList);
         appInfoList = mAdapter.getApplist();
         mListView.setAdapter(mAdapter);
-
-        Intent intent = getIntent();
-        String placeName = intent.getExtras().getString("placeName");
 
         mListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -98,6 +107,13 @@ public class AppInfoActivity extends AppCompatActivity {
 
         List<String> list = new ArrayList<>();
         list.addAll(hashSet);
+
+        String apps = "";
+        for(String appName : list) {
+            apps += appName;
+        }
+
+
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();

@@ -13,6 +13,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.greentea.locker.PlaceDatabase.PickedPlace;
+import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -36,10 +38,13 @@ public class AppInfoAdapter extends BaseAdapter {
 
     SharedPreferences sharedPreferences;
 
-    public AppInfoAdapter(Context mContext) {
+    String placeNames;
+
+    public AppInfoAdapter(Context mContext, String placeNames) {
         super();
 //        this.checkedApps = list;
         this.mContext = mContext;
+        this.placeNames = placeNames;
 //        sharedPreferences = mContext.getSharedPreferences("test", mContext.MODE_PRIVATE);
     }
 
@@ -112,6 +117,8 @@ public class AppInfoAdapter extends BaseAdapter {
 
     // 어플리케이션 리스트 작성
     public void rebuild() {
+
+
         if (mAppList == null) {
 
             // 패키지 매니저 취득
@@ -140,7 +147,9 @@ public class AppInfoAdapter extends BaseAdapter {
 
         sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
 
-        String string;
+//        String string;
+
+        String[] strings = placeNames.split(",");
 
         AppInfo addInfo = null;
         ApplicationInfo info = null;
@@ -158,14 +167,23 @@ public class AppInfoAdapter extends BaseAdapter {
                 // App Package Name
                 addInfo.mAppPackage = app.packageName;
 
-                string = sharedPreferences.getString(addInfo.mAppPackage, "");
+//                string = sharedPreferences.getString(addInfo.mAppPackage, "");
 
-                if(string == ""){
-                    addInfo.chkFlag = false;
+                boolean flag = false;
+                for(String temp : strings){
+                    if(app.loadLabel(pm).toString().equals(temp)){
+                        flag = true; break;
+                    }
                 }
-                else{
-                    addInfo.chkFlag = true;
-                }
+
+                addInfo.chkFlag = flag;
+
+//                if(string == ""){
+//                    addInfo.chkFlag = false;
+//                }
+//                else{
+//                    addInfo.chkFlag = true;
+//                }
 
                 mListData.add(addInfo);
             }

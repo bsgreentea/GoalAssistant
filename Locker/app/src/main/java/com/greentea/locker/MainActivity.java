@@ -125,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(View v, int pos) {
-                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
-                startActivityForResult(intent, 102);
-            }
-        });
+//        adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(View v, int pos) {
+//                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
+//                startActivityForResult(intent, 102);
+//            }
+//        });
 
         init();
     }
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         PickedPlace pickedPlace = new PickedPlace();
         pickedPlace.setPlaceName(name);
-        pickedPlace.setCheckedList("");
+        pickedPlace.setCheckedList("com.greentea.locker");
         pickedPlace.setLat(tempLatLng.latitude);
         pickedPlace.setLng(tempLatLng.longitude);
         list.add(pickedPlace);

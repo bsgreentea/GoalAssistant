@@ -34,112 +34,62 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
     SharedPreferences sharedPreferences;
 
-//    @Override
-//    public void onCreate() {
-//        super.onCreate();
-//
-//        Log.d("serviceOncreate_test", "service is created");
-//    }
-
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
 
-            Log.i("Service_test", event.getPackageName().toString());
+            double longitude = 0, latitude = 0;
 
-            sharedPreferences = getApplicationContext().getSharedPreferences("test", MODE_PRIVATE);
+            lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-            Map<String, ?> allEntries = sharedPreferences.getAll();
+            if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
 
-            int flag = 0;
-            String eventString = event.getPackageName().toString();
+            }
+            else{
+                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
 
-            for(Map.Entry<String, ?> entry : allEntries.entrySet()){
-                if(entry.getKey().equals(eventString)){
-                    flag = 1; break;
+//            String temp = Double.toString(latitude) + Double.toString(longitude);
+//            Log.i("coord_test", temp);
+
+            List<PickedPlace> places = new PickedPlaceRepository(getApplication()).getAll();
+
+            Log.i("places", String.valueOf(places.size()));
+
+            StringBuilder appNames = new StringBuilder();
+
+            for(int i=0; i<places.size(); i++){
+                Log.d("places[i]", places.get(i).getPlaceName());
+
+                Double lat = places.get(i).getLat();
+                Double lng = places.get(i).getLng();
+
+                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
+
+//                    Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
+//                    gotoHome();
                 }
             }
 
-//            if("com.kakao.talk".equals(event.getPackageName())){
-//                Log.d("kakao_test", "test");
-//                gotoHome();
+
+//            Log.i("Service_test", event.getPackageName().toString());
+
+//            sharedPreferences = getApplicationContext().getSharedPreferences("test", MODE_PRIVATE);
+//
+//            Map<String, ?> allEntries = sharedPreferences.getAll();
+//
+//            int flag = 0;
+//            String eventString = event.getPackageName().toString();
+//
+//            for(Map.Entry<String, ?> entry : allEntries.entrySet()){
+//                if(entry.getKey().equals(eventString)){
+//                    flag = 1; break;
+//                }
 //            }
 
 
-//            if( "com.kakao.talk".equals(event.getPackageName())){
-
-            flag = 1;
-            if(flag == 1) {
-                double longitude = 0, latitude = 0;
-
-                lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-                if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-
-                }
-                else{
-                    Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    longitude = location.getLongitude();
-                    latitude = location.getLatitude();
-                }
-
-//                String temp = Double.toString(latitude) + Double.toString(longitude);
-//                Log.i("coord_test", temp);
-
-                List<PickedPlace> places = new PickedPlaceRepository(getApplication()).getAll();
-
-                Log.i("places", String.valueOf(places.size()));
-
-                for(int i=0; i<places.size(); i++){
-                    Log.d("places[i]", places.get(i).getPlaceName());
-
-//                    Double lat = places.get(i).
-                }
-
-//                List<PickedPlace> places = PickedPlaceDB.getDB(getApplication()).pickedPlaceDAO().getAll();
-//
-//                for(int i=0; i<places.size(); i++){
-//
-//                    Log.d("service_test", "database test");
-//
-//                    Double lat = places.get(i).getLat();
-//                    Double lng = places.get(i).getLng();
-//
-//                    Toast.makeText(getApplicationContext(), "thsithisthisthis", Toast.LENGTH_SHORT).show();
-//
-//                    if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
-//
-//                        Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-//                        gotoHome();
-//                    }
-//                }
-
-//                sharedPreferences = getApplicationContext().getSharedPreferences("place", MODE_PRIVATE);
-//
-//                Map<String, ?> places = sharedPreferences.getAll();
-//
-//                for(Map.Entry<String, ?> entry : places.entrySet()){
-//                    String temp[] = entry.getKey().split(" ");
-//                    String lats = temp[0];
-//                    String lngs = temp[1];
-//                    Double lat = Double.parseDouble(lats);
-//                    Double lng = Double.parseDouble(lngs);
-//
-//                    if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 1) {
-//
-//                        Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(getApplicationContext(), lats +" " + lngs, Toast.LENGTH_SHORT).show();
-//                        gotoHome();
-//                    }
-//                }
-
-//                // ex) 하이테크센터
-//                if(CalculateDistance.distance(latitude, longitude, 37.4505988,126.6551209) <= 1) {
-//
-//                    Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-//                    gotoHome();
-//                }
-            }
         }
     }
 
@@ -163,8 +113,6 @@ public class WindowChangeDetectingService extends AccessibilityService{
     public void onDestroy() {
         super.onDestroy();
     }
-
-
 
     @Override
     protected boolean onKeyEvent(KeyEvent event) {

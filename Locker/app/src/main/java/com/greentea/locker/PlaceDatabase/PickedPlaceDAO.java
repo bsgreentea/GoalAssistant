@@ -1,8 +1,11 @@
 package com.greentea.locker.PlaceDatabase;
 
+import android.icu.text.Replaceable;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -10,7 +13,7 @@ import java.util.List;
 @Dao
 public interface PickedPlaceDAO {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PickedPlace pickedPlace);
 
     @Query("DELETE FROM place_table")
@@ -24,4 +27,7 @@ public interface PickedPlaceDAO {
 
     @Query("SELECT * FROM place_table")
     List<PickedPlace> getAll();
+
+    @Query("SELECT * FROM place_table WHERE placeName = :pName")
+    PickedPlace getPlace(String pName);
 }

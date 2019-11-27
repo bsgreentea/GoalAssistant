@@ -60,8 +60,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
                 String placeName = listData.get(position).getPlaceName();
 
-                intent.putExtra("placeName", placeName);
-                Toast.makeText(context, placeName, Toast.LENGTH_SHORT).show();
+//                intent.putExtra("placeName", placeName);
+
+                intent.putExtra("pickedPlace", listData.get(position));
+//                Toast.makeText(context, placeName, Toast.LENGTH_SHORT).show();
                 context.startActivity(intent);
 //                Toast.makeText(context, "asdf", Toast.LENGTH_SHORT).show();
             }
