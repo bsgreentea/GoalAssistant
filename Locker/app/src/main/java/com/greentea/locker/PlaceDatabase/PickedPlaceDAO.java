@@ -4,6 +4,7 @@ import android.icu.text.Replaceable;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -19,8 +20,8 @@ public interface PickedPlaceDAO {
     @Query("DELETE FROM place_table")
     void deleteAll();
 
-    @Query("DELETE FROM place_table WHERE placeName = :pName")
-    void deletePlace(String pName);
+    @Delete
+    void deletePlace(PickedPlace pickedPlace);
 
     @Query("SELECT * FROM place_table ORDER BY placeName ASC")
     LiveData<List<PickedPlace>> getAllPickedPlace();

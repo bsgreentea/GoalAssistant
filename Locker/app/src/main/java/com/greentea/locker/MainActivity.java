@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.graphics.PointF;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
@@ -221,14 +223,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void applyText(String name) {
 
         placeName = name;
-//        Data data = new Data(placeName);
-//
-//        data.setLat(tempLatLng.latitude);
-//        data.setLng(tempLatLng.longitude);
-
-//        list.add(data);
-//        adapter.addItem(data);
-//        adapter.notifyDataSetChanged();
 
         PickedPlace pickedPlace = new PickedPlace();
         pickedPlace.setPlaceName(name);
@@ -242,6 +236,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void openDialog(PointF pointF, LatLng latLng){
         NameDialog nameDialog = new NameDialog();
         nameDialog.show(getSupportFragmentManager(), "dialog");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+//        Log.d("asdasdfasdfasdfasdff","ASdf");
+////        if(requestCode == 123){
+            if(resultCode == 123) {
+                Log.d("!!!!!!!!!!!!!!!!!!!!!1", "!!!!!!!!!!!!!!!!!11");
+                PickedPlace pickedPlace1 = (PickedPlace) data.getSerializableExtra("origin");
+                PickedPlace pickedPlace2 = (PickedPlace) data.getSerializableExtra("pickedPlace");
+                pickedPlaceViewModel.deletePlace(pickedPlace1);
+                pickedPlaceViewModel.insert(pickedPlace2);
+            }
+//        }
     }
 
     @Override
@@ -273,19 +283,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
         mapView.onStop();
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-
-        if(list.size() > 0) {
-            for (int i = 0; i < list.size(); i++) {
-
-                String temp = list.get(i).getLat().toString() + " " + list.get(i).getLng().toString();
-
-                editor.putString(temp,temp);
-            }
-        }
-
-        editor.commit();
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.clear();
+//
+//        if(list.size() > 0) {
+//            for (int i = 0; i < list.size(); i++) {
+//
+//                String temp = list.get(i).getLat().toString() + " " + list.get(i).getLng().toString();
+//
+//                editor.putString(temp,temp);
+//            }
+//        }
+//
+//        editor.commit();
     }
 
     @Override

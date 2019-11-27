@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -40,6 +42,8 @@ public class AppInfoActivity extends AppCompatActivity {
     private List<AppInfo> appInfoList;
 //    private CheckedAppViewModel checkedAppViewModel;
 
+    private PickedPlace pickedPlace;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +57,21 @@ public class AppInfoActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 //        String placeName = intent.getExtras().getString("placeName");
-        PickedPlace pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
+        pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
 
 //        PickedPlace pickedPlace = new PickedPlaceRepository(getApplication()).getPlace(placeName);
 
         Toast.makeText(this, pickedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
 
         String appList = pickedPlace.getCheckedList();
+
+        String[] apps = appList.split(",");
+
+        for(String temp : apps){
+            hashSet.add(temp);
+        }
+
+        Log.d("list_test", appList);
 
         mAdapter = new AppInfoAdapter(this, appList);
         appInfoList = mAdapter.getApplist();
@@ -79,7 +91,7 @@ public class AppInfoActivity extends AppCompatActivity {
                     checkBox.setChecked(false);
                     hashSet.remove(packageName);
                 }
-                else{
+                else {
                     checkBox.setChecked(true);
                     hashSet.add(packageName);
                 }
@@ -100,36 +112,56 @@ public class AppInfoActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-        Log.d("chk_list_test", "test");
+        getMenuInflater().inflate(R.menu.app_menu, menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_btn1:
+                goBack();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void goBack(){
 
         List<String> list = new ArrayList<>();
         list.addAll(hashSet);
 
+        // Locker 앱도 차단할 경우, com.greentea.locker 추가하기
         String apps = "";
-        for(String appName : list) {
-            apps += appName;
+
+        for(int i = 0; i<list.size(); i++){
+            apps += list.get(i);
+            if(i < list.size() - 1) apps += ",";
         }
 
+        Intent intent = new Intent();
 
+        intent.putExtra("origin", pickedPlace);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
+        pickedPlace.setCheckedList(apps);
+        intent.putExtra("pickedPlace", pickedPlace);
 
-        for(String s : list){
-            editor.putString(s, s);
-        }
+        setResult(123, intent);
+        finish();
+    }
 
-        editor.commit();
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-
     }
 
     // 작업 시작

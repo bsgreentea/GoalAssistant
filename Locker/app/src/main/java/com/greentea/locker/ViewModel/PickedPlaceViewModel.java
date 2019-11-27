@@ -29,6 +29,8 @@ public class PickedPlaceViewModel extends AndroidViewModel {
 
     public void deleteAll() {repository.deleteAll();}
 
+    public void deletePlace(PickedPlace pickedPlace) {repository.deletePlace(pickedPlace);}
+
     public LiveData<List<PickedPlace>> getAllPickedPlace() {
         return allPickedPlace;
     }

@@ -37,20 +37,6 @@ public class PickedPlaceRepository {
         }.execute(pickedPlace);
     }
 
-    public void deletePlace(String id){
-
-        new AsyncTask<String ,Void, Void>(){
-            @Override
-            protected Void doInBackground(String... strings) {
-                if(pickedPlaceDAO == null) return null;
-                else{
-                    pickedPlaceDAO.deletePlace(strings[0]);
-                    return null;
-                }
-            }
-        }.execute(id);
-    }
-
     public void deleteAll(){
 
         new AsyncTask<Void, Void, Void>(){
@@ -122,6 +108,24 @@ public class PickedPlaceRepository {
         @Override
         protected PickedPlace doInBackground(Void... voids) {
             return asyncPlaceDao.getPlace(pName);
+        }
+    }
+
+    public void deletePlace(PickedPlace pickedPlace){
+        new deletePlaceAsyncTask(pickedPlaceDAO).execute(pickedPlace);
+    }
+
+    private static class deletePlaceAsyncTask extends AsyncTask<PickedPlace, Void, Void>{
+        private PickedPlaceDAO pickedPlaceDAO;
+
+        deletePlaceAsyncTask(PickedPlaceDAO dao){
+            pickedPlaceDAO = dao;
+        }
+
+        @Override
+        protected Void doInBackground(PickedPlace... pickedPlaces) {
+            pickedPlaceDAO.deletePlace(pickedPlaces[0]);
+            return null;
         }
     }
 }

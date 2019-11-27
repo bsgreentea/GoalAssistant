@@ -1,5 +1,6 @@
 package com.greentea.locker.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
@@ -58,13 +59,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
 //                intent.putExtra();
 
-                String placeName = listData.get(position).getPlaceName();
+//                String placeName = listData.get(position).getPlaceName();
 
 //                intent.putExtra("placeName", placeName);
 
                 intent.putExtra("pickedPlace", listData.get(position));
 //                Toast.makeText(context, placeName, Toast.LENGTH_SHORT).show();
-                context.startActivity(intent);
+//                context.startActivity(intent);
+                ((Activity) context).startActivityForResult(intent, 123);
 //                Toast.makeText(context, "asdf", Toast.LENGTH_SHORT).show();
             }
         });

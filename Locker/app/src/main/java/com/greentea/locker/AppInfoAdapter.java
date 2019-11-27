@@ -145,7 +145,7 @@ public class AppInfoAdapter extends BaseAdapter {
         // 기존 데이터 초기화
         mListData.clear();
 
-        sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
+//        sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
 
 //        String string;
 
@@ -171,7 +171,7 @@ public class AppInfoAdapter extends BaseAdapter {
 
                 boolean flag = false;
                 for(String temp : strings){
-                    if(app.loadLabel(pm).toString().equals(temp)){
+                    if(addInfo.mAppPackage.equals(temp)){
                         flag = true; break;
                     }
                 }
