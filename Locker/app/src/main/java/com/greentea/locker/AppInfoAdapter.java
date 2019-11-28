@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.greentea.locker.PlaceDatabase.PickedPlace;
-import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -45,7 +42,6 @@ public class AppInfoAdapter extends BaseAdapter {
 //        this.checkedApps = list;
         this.mContext = mContext;
         this.placeNames = placeNames;
-//        sharedPreferences = mContext.getSharedPreferences("test", mContext.MODE_PRIVATE);
     }
 
     public List<AppInfo> getApplist(){
@@ -106,12 +102,6 @@ public class AppInfoAdapter extends BaseAdapter {
 
         holder.checkBox.setChecked(appInfo.chkFlag);
 
-//        if (checkItem(appInfo)) {
-//            holder.checkBox.setChecked(true);
-//        } else {
-//            holder.checkBox.setChecked(false);
-//        }
-
         return convertView;
     }
 
@@ -145,10 +135,6 @@ public class AppInfoAdapter extends BaseAdapter {
         // 기존 데이터 초기화
         mListData.clear();
 
-//        sharedPreferences = mContext.getSharedPreferences("test", Context.MODE_PRIVATE);
-
-//        String string;
-
         String[] strings = placeNames.split(",");
 
         AppInfo addInfo = null;
@@ -167,8 +153,6 @@ public class AppInfoAdapter extends BaseAdapter {
                 // App Package Name
                 addInfo.mAppPackage = app.packageName;
 
-//                string = sharedPreferences.getString(addInfo.mAppPackage, "");
-
                 boolean flag = false;
                 for(String temp : strings){
                     if(addInfo.mAppPackage.equals(temp)){
@@ -177,13 +161,6 @@ public class AppInfoAdapter extends BaseAdapter {
                 }
 
                 addInfo.chkFlag = flag;
-
-//                if(string == ""){
-//                    addInfo.chkFlag = false;
-//                }
-//                else{
-//                    addInfo.chkFlag = true;
-//                }
 
                 mListData.add(addInfo);
             }

@@ -56,6 +56,7 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 Double lat = places.get(i).getLat();
                 Double lng = places.get(i).getLng();
 
+                // 설정 거리 내에 있는 장소일 경우
                 if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 10) {
 
                     Log.d("chked?", "ehkced");

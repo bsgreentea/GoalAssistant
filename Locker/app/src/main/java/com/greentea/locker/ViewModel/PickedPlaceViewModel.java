@@ -1,7 +1,6 @@
 package com.greentea.locker.ViewModel;
 
 import android.app.Application;
-import android.widget.ListView;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;

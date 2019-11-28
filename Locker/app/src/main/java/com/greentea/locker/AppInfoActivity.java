@@ -7,7 +7,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.greentea.locker.PlaceDatabase.PickedPlace;
-import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.AppInfo;
 
 import java.util.ArrayList;
@@ -34,13 +32,9 @@ public class AppInfoActivity extends AppCompatActivity {
     private ListView mListView = null;
     private AppInfoAdapter mAdapter = null;
 
-//    SharedPreference sharedPreference;
-
-    SharedPreferences sharedPreferences;
     HashSet<String> hashSet;
 
     private List<AppInfo> appInfoList;
-//    private CheckedAppViewModel checkedAppViewModel;
 
     private PickedPlace pickedPlace;
 
@@ -50,13 +44,11 @@ public class AppInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_app_info);
 
         hashSet = new HashSet<>();
-        sharedPreferences = getSharedPreferences("test", MODE_PRIVATE);
 
         mLoadingContainer = findViewById(R.id.loading_container);
         mListView = (ListView) findViewById(R.id.listView1);
 
         Intent intent = getIntent();
-//        String placeName = intent.getExtras().getString("placeName");
         pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
 
         Toast.makeText(this, pickedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();

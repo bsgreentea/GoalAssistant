@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PointF;
+import android.location.Geocoder;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +21,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +32,7 @@ import com.greentea.locker.ViewModel.PickedPlaceViewModel;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
@@ -37,6 +41,7 @@ import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.widget.LocationButtonView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,10 +66,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     RecyclerView recyclerView;
 
+    private Button b1;
+    private EditText et1;
+    private Geocoder geocoder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        b1 = (Button) findViewById(R.id.button);
+        et1 = (EditText)findViewById(R.id.editText);
+        geocoder = new Geocoder(this);
 
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
@@ -154,6 +167,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull final NaverMap naverMap) {
         //naverMap.getUiSettings().setLocationButtonEnabled(true);
         locationButtonView.setMap(naverMap);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<android.location.Address> list = null;
+
+
+                String str = et1.getText().toString();
+                try {
+                    list = geocoder.getFromLocationName(
+                            str, // 지역 이름
+                            10); // 읽을 개수
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("test","입출력 오류 - 서버에서 주소변환시 에러발생");
+                }
+
+                if (list != null) {
+                    if (list.size() == 0) {
+                        Log.e("test","해당되는 주소 정보는 없습니다");
+                        Toast.makeText(MainActivity.this, "해당되는 주소 정보는 없습니다", Toast.LENGTH_SHORT).show();
+                    } else {
+                        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()));
+                        naverMap.moveCamera(cameraUpdate);
+                        //          list.get(0).getCountryName();  // 국가명
+                        //          list.get(0).getLatitude();        // 위도
+                        //          list.get(0).getLongitude();    // 경도
+                    }
+                }
+            }
+        });
 
         // Location Change Listener를 사용하기 위한 FusedLocationSource 설정
         naverMap.setLocationSource(locationSource);
