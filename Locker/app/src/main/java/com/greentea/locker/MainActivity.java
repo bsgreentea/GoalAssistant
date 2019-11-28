@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.greentea.locker.Adapter.RecyclerAdapter;
-import com.greentea.locker.Database.DbOpenHelper;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
 import com.gun0912.tedpermission.PermissionListener;
@@ -47,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // NaverMap API 3.0
     private MapView mapView;
     private LocationButtonView locationButtonView;
-//    private Button button;
-    private FloatingActionButton button;
 
     // FusedLocationSource (Google)
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
@@ -64,17 +61,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     RecyclerView recyclerView;
 
-//    https://github.com/yoondowon/InnerDatabaseSQLite/blob/master/app/src/main/java/com/example/user/innerdatabasesqlite/MainActivity.java
-    private DbOpenHelper mDbOpenHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDbOpenHelper = new DbOpenHelper(this);
-        mDbOpenHelper.open();
-        mDbOpenHelper.create();
 
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
@@ -93,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         };
 
+        // 권한 설정
         TedPermission.with(this)
                 .setPermissionListener(permissionlistener)
                 .setRationaleTitle("title")
@@ -109,26 +100,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         naverMapBasicSettings();
 
-//        button = (FloatingActionButton) findViewById(R.id.fab_main);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
-//                startActivityForResult(intent, 101);
-//            }
-//        });
-
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new RecyclerAdapter(this, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-//        adapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(View v, int pos) {
-//                Intent intent = new Intent(getApplicationContext(), AppInfoActivity.class);
-//                startActivityForResult(intent, 102);
-//            }
-//        });
 
         init();
     }
@@ -156,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onItemSelected(View v, int position) {
         RecyclerAdapter.ViewHolder viewHolder = (RecyclerAdapter.ViewHolder)recyclerView.findViewHolderForAdapterPosition(position);
-//        viewHolder
     }
 
     // https://hyongdoc.tistory.com/177
@@ -181,9 +155,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //naverMap.getUiSettings().setLocationButtonEnabled(true);
         locationButtonView.setMap(naverMap);
 
-        // ex) 하이테크센터
-        final Marker marker = new Marker();
-
         // Location Change Listener를 사용하기 위한 FusedLocationSource 설정
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
@@ -204,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         if(list != null) {
-            Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < list.size(); i++) {
                 Marker m = new Marker();
 
@@ -221,7 +192,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         PickedPlace pickedPlace = new PickedPlace();
         pickedPlace.setPlaceName(name);
-        pickedPlace.setCheckedList("com.greentea.locker");
+
+//        pickedPlace.setCheckedList("com.greentea.locker");
+        pickedPlace.setCheckedList("");
         pickedPlace.setLat(tempLatLng.latitude);
         pickedPlace.setLng(tempLatLng.longitude);
         list.add(pickedPlace);
@@ -237,8 +210,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-//        Log.d("asdasdfasdfasdfasdff","ASdf");
-////        if(requestCode == 123){
             if(resultCode == 123) {
                 Log.d("!!!!!!!!!!!!!!!!!!!!!1", "!!!!!!!!!!!!!!!!!11");
                 PickedPlace pickedPlace1 = (PickedPlace) data.getSerializableExtra("origin");

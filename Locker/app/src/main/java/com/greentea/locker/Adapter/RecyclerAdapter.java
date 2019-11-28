@@ -57,17 +57,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                 Context context = v.getContext();
                 Intent intent = new Intent(context, AppInfoActivity.class);
 
-//                intent.putExtra();
-
-//                String placeName = listData.get(position).getPlaceName();
-
-//                intent.putExtra("placeName", placeName);
-
                 intent.putExtra("pickedPlace", listData.get(position));
-//                Toast.makeText(context, placeName, Toast.LENGTH_SHORT).show();
-//                context.startActivity(intent);
                 ((Activity) context).startActivityForResult(intent, 123);
-//                Toast.makeText(context, "asdf", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -75,15 +66,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
     public interface OnListItemSelectedInterface {
         void onItemSelected(View v, int position);
     }
-
-
-    //    @Override
-//    public void onBindViewHolder(@NonNull RecyclerAdapter.ViewHolder holder, int position) {
-//        // Item을 하나, 하나 보여주는(bind 되는) 함수
-////        holder.onBind(listData.get(position));
-//        holder.setIsRecyclable(true);
-//        holder.
-//    }
 
     public interface OnItemClickListener {
         void onItemClick(View v, int pos);
@@ -108,28 +90,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                             itemListener.onItemClick(v, pos);
                         }
 
-//                        mListener.onItemSelected(v, pos);
-
-//                        Context context = v.getContext();
-//                        Intent intent = new Intent(context, AppInfoActivity.class);
-//                        context.startActivity(intent);
                     }
                 }
             });
 
-//            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//
-//                    int pos = getAdapterPosition();
-//                    if(pos != RecyclerView.NO_POSITION){
-//
-//
-//                    }
-//
-//                    return false;
-//                }
-//            });
         }
     }
 
@@ -159,16 +123,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             super(itemView);
 
             textView1 = itemView.findViewById(R.id.textView);
-
-//            textView1.setOnLongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View v) {
-//
-//
-//
-//                    return true;
-//                }
-//            });
         }
 
         void onBind(PickedPlace pickedPlace) {

@@ -3,14 +3,11 @@ package com.greentea.locker;
 import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LiveData;
-import androidx.room.Room;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,21 +15,14 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
 import com.greentea.locker.PlaceDatabase.PickedPlace;
-import com.greentea.locker.PlaceDatabase.PickedPlaceDB;
 import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.CalculateDistance;
-import com.naver.maps.geometry.LatLng;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 public class WindowChangeDetectingService extends AccessibilityService{
 
     LocationManager lm;
-
-    SharedPreferences sharedPreferences;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
@@ -69,8 +59,6 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 10) {
 
                     Log.d("chked?", "ehkced");
-//                    Toast.makeText(getApplicationContext(), "공부해라", Toast.LENGTH_SHORT).show();
-//                    gotoHome();
 
                     if(appNames.equals("")){
                         appNames = places.get(i).getCheckedList();
@@ -100,23 +88,6 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 Toast.makeText(getApplicationContext(), "앱을 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 gotoHome();
             }
-
-//            Log.i("Service_test", event.getPackageName().toString());
-
-//            sharedPreferences = getApplicationContext().getSharedPreferences("test", MODE_PRIVATE);
-//
-//            Map<String, ?> allEntries = sharedPreferences.getAll();
-//
-//            int flag = 0;
-//            String eventString = event.getPackageName().toString();
-//
-//            for(Map.Entry<String, ?> entry : allEntries.entrySet()){
-//                if(entry.getKey().equals(eventString)){
-//                    flag = 1; break;
-//                }
-//            }
-
-
         }
     }
 

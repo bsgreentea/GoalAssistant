@@ -56,8 +56,6 @@ public class PickedPlaceRepository {
         return allPickedPlace;
     }
 
-//    public List<PickedPlace> getAll() {return places;}
-
     public List<PickedPlace> getAll(){
         try{
             places = new getAllAsyncTask(pickedPlaceDAO).execute().get();

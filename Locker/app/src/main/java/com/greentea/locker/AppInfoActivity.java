@@ -59,8 +59,6 @@ public class AppInfoActivity extends AppCompatActivity {
 //        String placeName = intent.getExtras().getString("placeName");
         pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
 
-//        PickedPlace pickedPlace = new PickedPlaceRepository(getApplication()).getPlace(placeName);
-
         Toast.makeText(this, pickedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
 
         String appList = pickedPlace.getCheckedList();
@@ -90,13 +88,13 @@ public class AppInfoActivity extends AppCompatActivity {
                 if(checkBox.isChecked()){
                     checkBox.setChecked(false);
                     hashSet.remove(packageName);
+                    Toast.makeText(AppInfoActivity.this, appName + " 차단을 해제합니다.", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     checkBox.setChecked(true);
                     hashSet.add(packageName);
+                    Toast.makeText(AppInfoActivity.this, appName + "을(를) 차단 목록에 추가합니다.", Toast.LENGTH_SHORT).show();
                 }
-
-                Toast.makeText(AppInfoActivity.this, appName, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -107,8 +105,6 @@ public class AppInfoActivity extends AppCompatActivity {
 
         // 작업 시작
         startTask();
-
-        hashSet = new HashSet<>();
     }
 
     @Override

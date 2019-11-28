@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
 @Entity(tableName = "place_table")
-public class PickedPlace implements Serializable {
+public class PickedPlace implements Serializable { // intent로 넘기기 위해 serializable 상속
 
     @PrimaryKey
     @NonNull
