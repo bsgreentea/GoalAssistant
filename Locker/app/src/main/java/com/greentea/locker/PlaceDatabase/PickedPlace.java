@@ -28,6 +28,10 @@ public class PickedPlace implements Serializable { // intent로 넘기기 위해
     private Double lng;
 
     @NonNull
+    @ColumnInfo(name = "version")
+    private boolean version = false;
+
+    @NonNull
     public Double getLat() {
         return lat;
     }
@@ -61,5 +65,13 @@ public class PickedPlace implements Serializable { // intent로 넘기기 위해
 
     public void setCheckedList(@NonNull String checkedList) {
         this.checkedList = checkedList;
+    }
+
+    public boolean getVersion() {
+        return version;
+    }
+
+    public void setVersion(boolean version) {
+        this.version = version;
     }
 }

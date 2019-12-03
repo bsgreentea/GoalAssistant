@@ -25,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.greentea.locker.Adapter.RecyclerAdapter;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
@@ -45,7 +44,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//http://swlock.blogspot.com/2015/05/android_22.html
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NameDialog.NameDialogListener, RecyclerAdapter.OnListItemSelectedInterface {
 
     // NaverMap API 3.0
@@ -172,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 List<android.location.Address> list = null;
-
 
                 String str = et1.getText().toString();
                 try {

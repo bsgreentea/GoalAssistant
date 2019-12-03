@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b02ed4d4c928afc8c2e53d58e296dac5",
+    "identityHash": "6107a8d888fe26fcd24d0b71071f57ca",
     "entities": [
       {
         "tableName": "place_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`placeName` TEXT NOT NULL, `checkedList` TEXT NOT NULL, `lat` REAL NOT NULL, `lng` REAL NOT NULL, PRIMARY KEY(`placeName`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`placeName` TEXT NOT NULL, `checkedList` TEXT NOT NULL, `lat` REAL NOT NULL, `lng` REAL NOT NULL, `version` INTEGER NOT NULL, PRIMARY KEY(`placeName`))",
         "fields": [
           {
             "fieldPath": "placeName",
@@ -31,6 +31,12 @@
             "columnName": "lng",
             "affinity": "REAL",
             "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -46,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"b02ed4d4c928afc8c2e53d58e296dac5\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6107a8d888fe26fcd24d0b71071f57ca\")"
     ]
   }
 }

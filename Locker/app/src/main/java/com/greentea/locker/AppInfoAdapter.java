@@ -33,8 +33,6 @@ public class AppInfoAdapter extends BaseAdapter {
     private List<AppInfo> checkedApps;
     private ArrayList<AppInfo> mListData = new ArrayList<AppInfo>();
 
-    SharedPreferences sharedPreferences;
-
     String placeNames;
 
     public AppInfoAdapter(Context mContext, String placeNames) {
@@ -107,18 +105,15 @@ public class AppInfoAdapter extends BaseAdapter {
 
     // 어플리케이션 리스트 작성
     public void rebuild() {
-
-
         if (mAppList == null) {
-
             // 패키지 매니저 취득
             pm = mContext.getPackageManager();
-
             // 설치된 어플리케이션 취득
             mAppList = pm.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES | PackageManager.GET_DISABLED_COMPONENTS);
         }
 
         AppInfo.AppFilter filter;
+
         switch (MENU_MODE) {
             case MENU_DOWNLOAD:
                 filter = AppInfo.THIRD_PARTY_FILTER;

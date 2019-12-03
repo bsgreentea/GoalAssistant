@@ -6,6 +6,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".AppInfoActivity">
+    
+    <TextView
+        android:id="@+id/taste_view"
+        android:layout_width="match_parent"
+        android:scaleType="fitCenter"
+        android:textSize="35dp"
+        android:text="asdfasdf"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:textAlignment="center"
+        android:layout_height="80dp"
+        android:padding="2dip"/>
 
     <ListView android:layout_height="wrap_content"
         android:layout_width="match_parent"

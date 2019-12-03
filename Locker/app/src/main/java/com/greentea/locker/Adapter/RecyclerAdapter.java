@@ -3,6 +3,7 @@ package com.greentea.locker.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
                         if(itemListener != null){
                             itemListener.onItemClick(v, pos);
                         }
-
                     }
                 }
             });
@@ -124,6 +124,12 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
 
         void onBind(PickedPlace pickedPlace) {
             textView1.setText(pickedPlace.getPlaceName());
+            if(pickedPlace.getVersion() == true) {
+                textView1.setBackgroundColor(0xFFC71585);
+            }
+            else {
+                textView1.setBackgroundColor(0xFFFFFFFF);
+            }
         }
     }
 }

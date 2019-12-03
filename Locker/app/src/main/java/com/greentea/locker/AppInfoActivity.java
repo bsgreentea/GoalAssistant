@@ -37,6 +37,8 @@ public class AppInfoActivity extends AppCompatActivity {
     private List<AppInfo> appInfoList;
 
     private PickedPlace pickedPlace;
+    private boolean versionFlag;
+    private TextView tasteView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +47,13 @@ public class AppInfoActivity extends AppCompatActivity {
 
         hashSet = new HashSet<>();
 
+        tasteView = findViewById(R.id.taste_view);
         mLoadingContainer = findViewById(R.id.loading_container);
         mListView = (ListView) findViewById(R.id.listView1);
 
         Intent intent = getIntent();
         pickedPlace = (PickedPlace) intent.getSerializableExtra("pickedPlace");
+        versionFlag = pickedPlace.getVersion();
 
         Toast.makeText(this, pickedPlace.getPlaceName(), Toast.LENGTH_SHORT).show();
 
@@ -89,6 +93,39 @@ public class AppInfoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if(versionFlag){
+            tasteView.setText("매운맛");
+            tasteView.setBackgroundColor(0xFFC71585);
+            tasteView.setTextColor(0xFFFFFFFF);
+        }
+        else{
+            tasteView.setText("순한맛");
+            tasteView.setBackgroundColor(0xFFFFFFFF);
+            tasteView.setTextColor(0xFF000000);
+        }
+
+        tasteView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(versionFlag){
+                    tasteView.setText("순한맛");
+                    tasteView.setBackgroundColor(0xFFFFFFFF);
+                    tasteView.setTextColor(0xFF000000);
+                    Toast.makeText(getApplicationContext(), "순한맛으로 변경합니다.", Toast.LENGTH_SHORT).show();
+                    versionFlag = false;
+                }
+                else{
+                    tasteView.setText("매운맛");
+                    tasteView.setBackgroundColor(0xFFC71585);
+                    tasteView.setTextColor(0xFFFFFFFF);
+                    Toast.makeText(getApplicationContext(), "지정된 범위에 진입시 앱 사용이 불가합니다.", Toast.LENGTH_SHORT).show();
+                    versionFlag = true;
+                }
+            }
+        });
+
     }
 
     @Override
@@ -101,16 +138,14 @@ public class AppInfoActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.app_menu, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_btn1:
+            case R.id.apply_btn:
                 goBack();
                 return true;
             default:
@@ -123,7 +158,7 @@ public class AppInfoActivity extends AppCompatActivity {
         List<String> list = new ArrayList<>();
         list.addAll(hashSet);
 
-        // Locker 앱도 차단할 경우, com.greentea.locker 추가하기
+        // Locker 앱도 차단할 경우, com.greentea.locker
         String apps = "";
 
         for(int i = 0; i<list.size(); i++){
@@ -135,7 +170,17 @@ public class AppInfoActivity extends AppCompatActivity {
 
         intent.putExtra("origin", pickedPlace);
 
+        if(versionFlag){
+            if(!apps.equals("")){
+                apps += ",com.greentea.locker";
+            }
+            // if there's no app for blocking
+            // must not append my package name
+        }
+
+        pickedPlace.setVersion(versionFlag);
         pickedPlace.setCheckedList(apps);
+
         intent.putExtra("pickedPlace", pickedPlace);
 
         setResult(123, intent);
@@ -157,12 +202,7 @@ public class AppInfoActivity extends AppCompatActivity {
         new AppTask().execute();
     }
 
-    /**
-     * 로딩뷰 표시 설정
-     *
-     * @param isView
-     *            표시 유무
-     */
+    // 로딩 뷰
     private void setLoadingView(boolean isView) {
         if (isView) {
             // 화면 로딩뷰 표시
