@@ -51,19 +51,19 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/setting_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="#009688"
-        android:src="@drawable/ic_edit_white_24dp"
-        app:borderWidth="0dp"
-        app:fabSize="normal"
-        android:layout_gravity="right"
-        />
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--android:id="@+id/setting_fab"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:backgroundTint="#009688"-->
+        <!--android:src="@drawable/ic_edit_white_24dp"-->
+        <!--app:borderWidth="0dp"-->
+        <!--app:fabSize="normal"-->
+        <!--android:layout_gravity="right"-->
+        <!--/>-->
 
 </RelativeLayout>

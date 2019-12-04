@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.greentea.locker.Adapter.RecyclerAdapter;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Button b1;
     private EditText et1;
     private Geocoder geocoder;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         b1 = (Button) findViewById(R.id.button);
         et1 = (EditText)findViewById(R.id.editText);
         geocoder = new Geocoder(this);
+        fab = findViewById(R.id.setting_fab);
 
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
@@ -117,6 +120,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         init();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     private void init() {
