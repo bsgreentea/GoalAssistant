@@ -124,7 +124,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(list.size() > 0){
+                    pickedPlaceViewModel.deleteAll();
+                    Toast.makeText(MainActivity.this, "초기화합니다.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AppInfoActivity"></activity>
+        <activity android:name=".SettingActivity"></activity>
 
         <meta-data android:name="DATABASE" android:value="app1_table.db" />
         <meta-data android:name="VERSION" android:value="2" />
