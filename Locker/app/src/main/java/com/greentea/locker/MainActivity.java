@@ -70,6 +70,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Geocoder geocoder;
     private FloatingActionButton fab;
 
+    private NaverMap map;
+    private boolean map_flag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if(!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
         }
+
+        map_flag = false;
 
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 if(list.size() > 0){
                     pickedPlaceViewModel.deleteAll();
+                    updateMarker(map);
                     Toast.makeText(MainActivity.this, "초기화합니다.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -178,6 +184,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(@NonNull final NaverMap naverMap) {
         //naverMap.getUiSettings().setLocationButtonEnabled(true);
         locationButtonView.setMap(naverMap);
+        map_flag = true;
+
+        map = naverMap;
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,15 +230,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 tempLatLng = new LatLng(latLng.latitude, latLng.longitude);
                 openDialog(pointF, latLng);
 
-                Marker m = new Marker();
-
-                m.setPosition(latLng);
-                m.setMap(naverMap);
+//                Marker m = new Marker();
+//
+//                m.setPosition(latLng);
+//                m.setMap(naverMap);
             }
         });
 
+        updateMarker(naverMap);
+    }
+
+    void updateMarker(NaverMap naverMap){
+
         if(list != null) {
-//            Toast.makeText(this, "asdf", Toast.LENGTH_SHORT).show();
             for (int i = 0; i < list.size(); i++) {
                 Marker m = new Marker();
 
@@ -253,6 +266,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         pickedPlace.setLng(tempLatLng.longitude);
         list.add(pickedPlace);
         pickedPlaceViewModel.insert(pickedPlace);
+
+        if(map_flag){
+            updateMarker(map);
+        }
     }
 
     public void openDialog(PointF pointF, LatLng latLng){
