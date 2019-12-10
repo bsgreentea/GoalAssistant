@@ -34,6 +34,7 @@ public class AppInfoAdapter extends BaseAdapter {
     private ArrayList<AppInfo> mListData = new ArrayList<AppInfo>();
 
     String placeNames;
+    String[] exceptions = {"samsung", "ahnlab", "greentea.locker", "microsoft", "dsi.ant"};
 
     public AppInfoAdapter(Context mContext, String placeNames) {
         super();
@@ -149,6 +150,14 @@ public class AppInfoAdapter extends BaseAdapter {
                 addInfo.mAppPackage = app.packageName;
 
                 boolean flag = false;
+
+                // 목록에 넣지 않을 앱 거르기
+                for(String str : exceptions){
+                    if(addInfo.mAppPackage.contains(str)) flag = true;
+                }
+                if(flag) continue;
+
+                flag = false;
                 for(String temp : strings){
                     if(addInfo.mAppPackage.equals(temp)){
                         flag = true; break;

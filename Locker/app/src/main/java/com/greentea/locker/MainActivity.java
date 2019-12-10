@@ -131,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 if(list.size() > 0){
                     pickedPlaceViewModel.deleteAll();
-                    updateMarker(map);
                     Toast.makeText(MainActivity.this, "초기화합니다.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -210,9 +209,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     } else {
                         CameraUpdate cameraUpdate = CameraUpdate.scrollTo(new LatLng(list.get(0).getLatitude(), list.get(0).getLongitude()));
                         naverMap.moveCamera(cameraUpdate);
-                        //          list.get(0).getCountryName();  // 국가명
-                        //          list.get(0).getLatitude();        // 위도
-                        //          list.get(0).getLongitude();    // 경도
                     }
                 }
             }
@@ -222,18 +218,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         naverMap.setLocationSource(locationSource);
         naverMap.setLocationTrackingMode(LocationTrackingMode.NoFollow);
 
-        // 지도를 길게 누를 때 마커 추가하기
+        // 지도를 길게 누를 때 장소 등록 다이얼로그 띄우기
         naverMap.setOnMapLongClickListener(new NaverMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
 
                 tempLatLng = new LatLng(latLng.latitude, latLng.longitude);
                 openDialog(pointF, latLng);
-
-//                Marker m = new Marker();
-//
-//                m.setPosition(latLng);
-//                m.setMap(naverMap);
             }
         });
 
@@ -288,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 pickedPlaceViewModel.deletePlace(pickedPlace1);
                 pickedPlaceViewModel.insert(pickedPlace2);
             }
-//        }
     }
 
     @Override
