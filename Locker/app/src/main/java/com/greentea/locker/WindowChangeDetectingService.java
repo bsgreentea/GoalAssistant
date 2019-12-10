@@ -28,6 +28,8 @@ public class WindowChangeDetectingService extends AccessibilityService{
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
 
+//            Log.d("packagename", event.getPackageName().toString());
+
             double longitude = 0, latitude = 0;
 
             lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

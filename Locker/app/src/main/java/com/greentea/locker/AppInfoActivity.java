@@ -110,16 +110,18 @@ public class AppInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(versionFlag){
-                    tasteView.setText("순한맛");
+//                    tasteView.setText("순한맛");
+                    tasteView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock_open_black_24dp,0,0,0);
                     tasteView.setBackgroundColor(0xFFFFFFFF);
-                    tasteView.setTextColor(0xFF000000);
+//                    tasteView.setTextColor(0xFF000000);
                     Toast.makeText(getApplicationContext(), "순한맛으로 변경합니다.", Toast.LENGTH_SHORT).show();
                     versionFlag = false;
                 }
                 else{
-                    tasteView.setText("매운맛");
+//                    tasteView.setText("매운맛");
+                    tasteView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_lock_outline_white_24dp,0,0,0);
                     tasteView.setBackgroundColor(0xFFC71585);
-                    tasteView.setTextColor(0xFFFFFFFF);
+//                    tasteView.setTextColor(0xFFFFFFFF);
                     Toast.makeText(getApplicationContext(), "지정된 범위에 진입시 앱 사용이 불가합니다.", Toast.LENGTH_SHORT).show();
                     versionFlag = true;
                 }
@@ -173,6 +175,7 @@ public class AppInfoActivity extends AppCompatActivity {
         if(versionFlag){
             if(!apps.equals("")){
                 apps += ",com.greentea.locker";
+                apps += ",com.samsung.accessibility"; // 접근성 권한도 접근 못하게 하기
             }
             // if there's no app for blocking
             // must not append my package name
