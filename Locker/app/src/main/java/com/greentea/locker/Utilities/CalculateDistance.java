@@ -12,8 +12,14 @@ public class CalculateDistance {
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
 
-        dist = dist * 1.609344;
         // kilometer
+//        dist = dist * 1.609344;
+
+        // 조정한 meter
+        dist = dist * 160.9344;
+
+        // 원래 meter
+//        dist = dist*1609.344;
         return (dist);
     }
 
