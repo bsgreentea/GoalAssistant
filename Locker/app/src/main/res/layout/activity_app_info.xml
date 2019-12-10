@@ -6,12 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".AppInfoActivity">
-    
+
     <TextView
+        android:layout_gravity="center"
         android:id="@+id/taste_view"
         android:layout_width="match_parent"
         android:scaleType="fitCenter"
         android:textSize="35dp"
+        android:drawablePadding="-20dp"
         android:text=""
         android:textStyle="bold"
         android:gravity="center_vertical"
