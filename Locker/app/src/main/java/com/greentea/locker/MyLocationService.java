@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
+import com.greentea.locker.Utilities.CalculateDistance;
 
 import java.util.concurrent.ExecutionException;
 
@@ -33,6 +34,8 @@ public class MyLocationService extends BroadcastReceiver {
 
                     Log.d("????", str);
 
+                    CalculateDistance.lat = location.getLatitude();
+                    CalculateDistance.lng = location.getLongitude();
 //                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show();
                 }
             }

@@ -22,7 +22,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.List;
 
-public class WindowChangeDetectingService extends AccessibilityService{
+public class WindowChangeDetectingService extends AccessibilityService {
 
     LocationManager lm;
 
@@ -40,12 +40,15 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
             }
             else{
-                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                Location location = new Location(LocationManager.GPS_PROVIDER);
-
-                longitude = location.getLongitude();
-                latitude = location.getLatitude();
+//                Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+////                Location location = new Location(LocationManager.GPS_PROVIDER);
+//
+//                longitude = location.getLongitude();
+//                latitude = location.getLatitude();
             }
+
+            latitude = CalculateDistance.lat;
+            longitude = CalculateDistance.lng;
 
 //            String temp = Double.toString(latitude) + Double.toString(longitude);
 //            Log.i("coord_test", temp);
@@ -64,10 +67,10 @@ public class WindowChangeDetectingService extends AccessibilityService{
 
                 // 설정 거리 내에 있는 장소일 경우
                 Double temp = CalculateDistance.distance(latitude, longitude, lat,lng);
-                Log.d("??? here", Double.toString(lat) + " " + Double.toString(lng));
-                Log.d("??? destination", Double.toString(latitude) + " " + Double.toString(longitude));
+                Log.d("??? destination", Double.toString(lat) + " " + Double.toString(lng));
+                Log.d("??? here", Double.toString(latitude) + " " + Double.toString(longitude));
                 Log.d("??? distance", places.get(i).getPlaceName() + Double.toString(temp));
-                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 100.0) {
+                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 50.0) {
 
                     Log.d("chked?", "ehkced");
 

@@ -2,6 +2,9 @@ package com.greentea.locker.Utilities;
 
 public class CalculateDistance {
 
+    public static Double lat = 0.0;
+    public static Double lng = 0.0;
+
     public static double distance(double lat1, double lon1, double lat2, double lon2) {
 
         double theta = lon1 - lon2;
