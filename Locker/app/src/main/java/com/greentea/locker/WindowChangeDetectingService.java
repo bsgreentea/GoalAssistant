@@ -14,9 +14,11 @@ import android.view.KeyEvent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationResult;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.PlaceDatabase.PickedPlaceRepository;
 import com.greentea.locker.Utilities.CalculateDistance;
+import com.naver.maps.map.util.FusedLocationSource;
 
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class WindowChangeDetectingService extends AccessibilityService{
             }
             else{
                 Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                Location location = new Location(LocationManager.GPS_PROVIDER);
+
                 longitude = location.getLongitude();
                 latitude = location.getLatitude();
             }
@@ -59,8 +63,10 @@ public class WindowChangeDetectingService extends AccessibilityService{
                 Double lng = places.get(i).getLng();
 
                 // 설정 거리 내에 있는 장소일 경우
-//                Double temp = CalculateDistance.distance(latitude, longitude, lat,lng);
-//                Log.d("distance?", Double.toString(temp));
+                Double temp = CalculateDistance.distance(latitude, longitude, lat,lng);
+                Log.d("??? here", Double.toString(lat) + " " + Double.toString(lng));
+                Log.d("??? destination", Double.toString(latitude) + " " + Double.toString(longitude));
+                Log.d("??? distance", places.get(i).getPlaceName() + Double.toString(temp));
                 if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 100.0) {
 
                     Log.d("chked?", "ehkced");

@@ -54,4 +54,6 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    implementation 'com.karumi:dexter:6.0.1'
 }

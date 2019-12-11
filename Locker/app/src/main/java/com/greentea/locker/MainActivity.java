@@ -3,21 +3,29 @@ package com.greentea.locker;
 import android.Manifest;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Geocoder;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -25,12 +33,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.internal.Constants;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.greentea.locker.Adapter.RecyclerAdapter;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
-import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
@@ -73,46 +93,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private NaverMap map;
     private boolean map_flag = false;
 
+    static MainActivity instance;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         b1 = (Button) findViewById(R.id.button);
-        et1 = (EditText)findViewById(R.id.editText);
+        et1 = (EditText) findViewById(R.id.editText);
         geocoder = new Geocoder(this);
         fab = findViewById(R.id.setting_fab);
 
-        if(!checkAccessibilityPermissions()) {
+        if (!checkAccessibilityPermissions()) {
             setAccessibilityPermissions();
         }
 
         map_flag = false;
 
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Toast.makeText(getBaseContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
-                        .show();
-            }
-        };
-
-        // 권한 설정
-        TedPermission.with(this)
-                .setPermissionListener(permissionlistener)
-                .setRationaleTitle("title")
-                .setRationaleMessage("message")
-                .setDeniedTitle("Permission denied")
-                .setDeniedMessage(
-                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setGotoSettingButtonText("OK")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
-                .check();
+        dexterPermission();
 
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -129,12 +134,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(list.size() > 0){
+                if (list.size() > 0) {
                     pickedPlaceViewModel.deleteAll();
                     Toast.makeText(MainActivity.this, "초기화합니다.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void updateLocation() {
+        buildLocationRequest();
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+    }
+
+    private PendingIntent getPendingIntent(){
+
+        Intent intent = new Intent(this, MyLocationService.class);
+        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
+        return PendingIntent.getBroadcast(this, 0, intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(1);
     }
 
     private void init() {
@@ -154,6 +184,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+    }
+
+    public void dexterPermission(){
+
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        updateLocation();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(MainActivity.this, "권한 승인 후 사용 가능합니다.", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+
+                    }
+                }).check();
 
     }
 
@@ -169,14 +221,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationButtonView = findViewById(R.id.locationbuttonview);
         // 내위치 찾기 위한 source
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (locationSource.onRequestPermissionsResult(requestCode, permissions, grantResults)) {
-            return;
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -268,6 +312,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         nameDialog.show(getSupportFragmentManager(), "dialog");
     }
 
+    // appinfo activity 정보 받기
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

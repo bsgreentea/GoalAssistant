@@ -16,10 +16,10 @@ public class CalculateDistance {
 //        dist = dist * 1.609344;
 
         // 조정한 meter
-        dist = dist * 160.9344;
+//        dist = dist * 160.9344;
 
         // 원래 meter
-//        dist = dist*1609.344;
+        dist = dist*1609.344;
         return (dist);
     }
 
