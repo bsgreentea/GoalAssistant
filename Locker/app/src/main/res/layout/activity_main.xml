@@ -12,7 +12,8 @@
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="12">
+        android:ems="14"
+        android:layout_marginTop="2dp">
     </EditText>
 
     <Button
@@ -22,7 +23,10 @@
         android:layout_alignBaseline="@+id/textView"
         android:layout_alignBottom="@+id/textView"
         android:layout_alignParentRight="true"
-        android:text="검색">
+        android:text="이동"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#000000"
+        android:textAlignment="center">
     </Button>
 
     <com.naver.maps.map.MapView

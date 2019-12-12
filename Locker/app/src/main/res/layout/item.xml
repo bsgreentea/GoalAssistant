@@ -3,7 +3,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:background="@drawable/item_view_style">
 
     <TextView
         android:id="@+id/textView"

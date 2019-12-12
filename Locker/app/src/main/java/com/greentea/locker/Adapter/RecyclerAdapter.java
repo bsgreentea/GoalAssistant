@@ -123,12 +123,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         }
 
         void onBind(PickedPlace pickedPlace) {
-            textView1.setText(pickedPlace.getPlaceName());
+            textView1.setText("  " + pickedPlace.getPlaceName());
             if(pickedPlace.getVersion() == true) {
                 textView1.setBackgroundColor(0xFFC71585);
+                textView1.setTextColor(0xFFFFFFFF);
             }
             else {
                 textView1.setBackgroundColor(0xFFFFFFFF);
+                textView1.setTextColor(0xFF000000);
             }
         }
     }

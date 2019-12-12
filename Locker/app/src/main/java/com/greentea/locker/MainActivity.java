@@ -44,7 +44,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.greentea.locker.Adapter.RecyclerAdapter;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
-import com.gun0912.tedpermission.TedPermission;
+//import com.gun0912.tedpermission.PermissionListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -118,6 +118,32 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map_flag = false;
 
         dexterPermission();
+
+//        PermissionListener permissionlistener = new PermissionListener() {
+//            @Override
+//            public void onPermissionGranted() {
+//                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
+////                updateLocation();
+//            }
+//
+//            @Override
+//            public void onPermissionDenied(List<String> deniedPermissions) {
+//                Toast.makeText(getBaseContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
+//                        .show();
+//            }
+//        };
+//
+//        // 권한 설정
+//        TedPermission.with(this)
+//                .setPermissionListener(permissionlistener)
+//                .setRationaleTitle("title")
+//                .setRationaleMessage("message")
+//                .setDeniedTitle("Permission denied")
+//                .setDeniedMessage(
+//                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+//                .setGotoSettingButtonText("OK")
+//                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
+//                .check();
 
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);
@@ -208,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }).check();
 
     }
+
 
     @Override
     public void onItemSelected(View v, int position) {

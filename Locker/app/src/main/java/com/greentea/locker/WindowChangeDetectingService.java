@@ -45,19 +45,20 @@ public class WindowChangeDetectingService extends AccessibilityService {
 //
 //                longitude = location.getLongitude();
 //                latitude = location.getLatitude();
+                latitude = CalculateDistance.lat;
+                longitude = CalculateDistance.lng;
             }
+//            latitude = CalculateDistance.lat;
+//            longitude = CalculateDistance.lng;
 
-            latitude = CalculateDistance.lat;
-            longitude = CalculateDistance.lng;
-
-//            String temp = Double.toString(latitude) + Double.toString(longitude);
-//            Log.i("coord_test", temp);
 
             List<PickedPlace> places = new PickedPlaceRepository(getApplication()).getAll();
 
             Log.i("places", String.valueOf(places.size()));
 
             String appNames = "";
+
+            Double dist = 0.0;
 
             for(int i=0; i<places.size(); i++){
                 Log.d("places[i]", places.get(i).getPlaceName());
@@ -66,11 +67,11 @@ public class WindowChangeDetectingService extends AccessibilityService {
                 Double lng = places.get(i).getLng();
 
                 // 설정 거리 내에 있는 장소일 경우
-                Double temp = CalculateDistance.distance(latitude, longitude, lat,lng);
+                dist = CalculateDistance.distance(latitude, longitude, lat,lng);
                 Log.d("??? destination", Double.toString(lat) + " " + Double.toString(lng));
                 Log.d("??? here", Double.toString(latitude) + " " + Double.toString(longitude));
-                Log.d("??? distance", places.get(i).getPlaceName() + Double.toString(temp));
-                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 50.0) {
+                Log.d("??? distance", places.get(i).getPlaceName() + Double.toString(dist));
+                if(CalculateDistance.distance(latitude, longitude, lat,lng) <= 100.0) {
 
                     Log.d("chked?", "ehkced");
 
