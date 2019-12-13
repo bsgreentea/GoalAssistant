@@ -3,14 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:padding="5dp"
-    android:background="@drawable/item_view_style">
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFC0C0C0"
+        android:background="@drawable/item_view_style"
         android:gravity="center_vertical"
         android:textSize="25dp"/>
 

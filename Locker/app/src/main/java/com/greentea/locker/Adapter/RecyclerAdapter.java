@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.greentea.locker.AppInfoActivity;
@@ -125,11 +126,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
         void onBind(PickedPlace pickedPlace) {
             textView1.setText("  " + pickedPlace.getPlaceName());
             if(pickedPlace.getVersion() == true) {
-                textView1.setBackgroundColor(0xFFC71585);
-                textView1.setTextColor(0xFFFFFFFF);
+//                textView1.setBackgroundColor(0xFFC71585);
+//                textView1.setTextColor(0xFFFFFFFF);
+                textView1.setTextColor(0xFFC71585);
             }
             else {
-                textView1.setBackgroundColor(0xFFFFFFFF);
+//                textView1.setBackgroundColor(0xFFFFFFFF);
+//                textView1.setTextColor(0xFF000000);
                 textView1.setTextColor(0xFF000000);
             }
         }
