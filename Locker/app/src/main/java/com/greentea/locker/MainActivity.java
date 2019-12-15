@@ -106,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        Intent intent = new Intent(this, LoadingActivity.class);
+//        startActivity(intent);
+
         b1 = (Button) findViewById(R.id.button);
         et1 = (EditText) findViewById(R.id.editText);
         geocoder = new Geocoder(this);
