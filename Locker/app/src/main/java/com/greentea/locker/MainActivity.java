@@ -7,25 +7,20 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Geocoder;
-import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
@@ -33,18 +28,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.internal.Constants;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.greentea.locker.Adapter.RecyclerAdapter;
 import com.greentea.locker.PlaceDatabase.PickedPlace;
 import com.greentea.locker.ViewModel.PickedPlaceViewModel;
-//import com.gun0912.tedpermission.PermissionListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -97,10 +87,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationRequest locationRequest;
     FusedLocationProviderClient fusedLocationProviderClient;
 
-    public static MainActivity getInstance() {
-        return instance;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,32 +107,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map_flag = false;
 
         dexterPermission();
-
-//        PermissionListener permissionlistener = new PermissionListener() {
-//            @Override
-//            public void onPermissionGranted() {
-//                Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-////                updateLocation();
-//            }
-//
-//            @Override
-//            public void onPermissionDenied(List<String> deniedPermissions) {
-//                Toast.makeText(getBaseContext(), "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT)
-//                        .show();
-//            }
-//        };
-//
-//        // 권한 설정
-//        TedPermission.with(this)
-//                .setPermissionListener(permissionlistener)
-//                .setRationaleTitle("title")
-//                .setRationaleMessage("message")
-//                .setDeniedTitle("Permission denied")
-//                .setDeniedMessage(
-//                        "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-//                .setGotoSettingButtonText("OK")
-//                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION)
-//                .check();
 
         mapView = findViewById(R.id.map_view);
         mapView.onCreate(savedInstanceState);

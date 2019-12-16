@@ -133,7 +133,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemVi
             else {
 //                textView1.setBackgroundColor(0xFFFFFFFF);
 //                textView1.setTextColor(0xFF000000);
-                textView1.setTextColor(0xFF000000);
+                textView1.setTextColor(0xFFFFFFFF);
             }
         }
     }

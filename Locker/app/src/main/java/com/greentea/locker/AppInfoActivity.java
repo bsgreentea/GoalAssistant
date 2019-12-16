@@ -34,8 +34,6 @@ public class AppInfoActivity extends AppCompatActivity {
 
     HashSet<String> hashSet;
 
-    private List<AppInfo> appInfoList;
-
     private PickedPlace pickedPlace;
     private boolean versionFlag;
     private TextView tasteView;
@@ -68,7 +66,6 @@ public class AppInfoActivity extends AppCompatActivity {
         Log.d("list_test", appList);
 
         mAdapter = new AppInfoAdapter(this, appList);
-        appInfoList = mAdapter.getApplist();
         mListView.setAdapter(mAdapter);
 
         mListView.setOnItemClickListener(new OnItemClickListener() {

@@ -39,9 +39,6 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="27xsw8wq1w" />
 
-        <activity android:name=".LoadingActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

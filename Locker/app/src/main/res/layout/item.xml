@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/item_view_style"
         android:gravity="center_vertical"
-        android:textSize="25dp"/>
+        android:textSize="25dp"
+        android:textStyle="bold"/>
 
 </LinearLayout>
